@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "package": "splitzip",
-  "revision": "42c743118a29db3270ae6a921a4a4eecb20cad04",
+  "revision": "f6960f1487ab4a056f8565d749d355739dc8394a",
   "requirements": [
     "triton==3.5.1"
   ],
@@ -9,25 +9,30 @@
     "triton"
   ],
   "sources": {
-    "revision": "42c743118a29db3270ae6a921a4a4eecb20cad04",
+    "revision": "f6960f1487ab4a056f8565d749d355739dc8394a",
     "archives": {
       "splitzip": {
-        "url": "https://codeload.github.com/Intelligent-Microsystems-Lab/SplitZip/tar.gz/42c743118a29db3270ae6a921a4a4eecb20cad04",
-        "sha256": "f58398ce5d5666fc0d8e9c15a756aa4efe3c171858eaae79678899f6bb75f952",
-        "revision": "42c743118a29db3270ae6a921a4a4eecb20cad04",
+        "url": "https://codeload.github.com/Intelligent-Microsystems-Lab/SplitZip/tar.gz/f6960f1487ab4a056f8565d749d355739dc8394a",
+        "sha256": "ae28ca3de9713199b26682d99022676aacd6bf19f4cb740997d79dd4a5147ee7",
+        "revision": "f6960f1487ab4a056f8565d749d355739dc8394a",
         "repository": "Intelligent-Microsystems-Lab/SplitZip"
       }
     },
     "files": {
       "codec_gpu.py": {
         "archive": "splitzip",
-        "member": "SplitZip-42c743118a29db3270ae6a921a4a4eecb20cad04/codec_gpu.py",
+        "member": "SplitZip-f6960f1487ab4a056f8565d749d355739dc8394a/codec_gpu.py",
         "sha256": "e28fe3263e8906b26d59789cbc5bccf14edc8391b0dae986aafaf34adb2d392c"
       },
       "LICENSE": {
         "archive": "splitzip",
-        "member": "SplitZip-42c743118a29db3270ae6a921a4a4eecb20cad04/LICENSE",
+        "member": "SplitZip-f6960f1487ab4a056f8565d749d355739dc8394a/LICENSE",
         "sha256": "83009a3c335d0aa17b80bceaceb702b3b5712f600fbfcbdd651997b93ec18adb"
+      },
+      "codec_fp8_gpu.py": {
+        "archive": "splitzip",
+        "member": "SplitZip-f6960f1487ab4a056f8565d749d355739dc8394a/codec_fp8_gpu.py",
+        "sha256": "31b7158d329f52df2f124258a671661544f74c951aba8829a78e65dadbfdc512"
       }
     }
   },

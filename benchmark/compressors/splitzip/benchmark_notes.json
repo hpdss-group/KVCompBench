@@ -1,6 +1,6 @@
 {
   "splitzip": {
-    "zh": "基准测试在数据集首个页上校准一次并冻结码本，校准计入 setup_seconds，不计入 codec 吞吐。每帧携带码本；批量解码在计时前合并独立帧并调整 escape 偏移，然后一次调用官方解码内核。尾页的内部填充不计入原始字节数。首个页码本不是最优策略保证。",
-    "en": "Benchmark calibration is frozen on the first dataset page and reported as setup time. Frames carry the codebook. Independent frames are merged before timing and decoded by one official kernel invocation; original byte counts exclude internal tail padding."
+    "zh": "基准测试在数据集首个页上校准一次并冻结码本，校准计入 setup_seconds，不计入 codec 吞吐。每帧携带码本；批量解码在计时前合并独立帧并调整 escape 偏移，然后一次调用官方解码内核。尾页的内部填充不计入原始字节数。首个页码本不是最优策略保证。 FP8 默认使用 3 位指数编码，将包括 scale 在内的整页字节流交给内核。批量解码合并各页的内核编码主体，并逐页恢复原始尾部。",
+    "en": "Benchmark calibration is frozen on the first dataset page and reported as setup time. Frames carry the codebook. Independent frames are merged before timing and decoded by one official kernel invocation; original byte counts exclude internal tail padding. The FP8 benchmark uses 3-bit exponent codes by default and encodes the complete stored page byte stream, including its scale bytes. The decoder merges kernel-coded bodies and restores page tails separately."
   }
 }

@@ -4,14 +4,16 @@
     {
       "name": "splitzip",
       "kind": "python",
-      "version": "upstream-42c743118a29db3270ae6a921a4a4eecb20cad04-adapter1",
+      "version": "upstream-f6960f1487ab4a056f8565d749d355739dc8394a-adapter2",
       "file": "api.py",
       "interface": "context",
       "compress": "compress",
       "decompress": "decompress",
       "device": "gpu",
       "dtypes": [
-        "bf16"
+        "bf16",
+        "fp8_e4m3fn",
+        "fp8_e5m2"
       ]
     }
   ]

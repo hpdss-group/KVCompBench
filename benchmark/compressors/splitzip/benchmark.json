@@ -9,6 +9,14 @@
     "calibration": "first-page-frozen",
     "packages": [
       "triton"
-    ]
+    ],
+    "by_dtype": {
+      "fp8_e4m3fn": {
+        "frame_format": "splitzip-fp8-packet-v1"
+      },
+      "fp8_e5m2": {
+        "frame_format": "splitzip-fp8-packet-v1"
+      }
+    }
   }
 }

@@ -80,6 +80,8 @@ def discover_routes(directory, codec_set='all', execution_device='declared', dty
             options=json.loads(manifest.read_text()).get(name) if manifest.exists() else None
             if options is None:
                 options=dict(execution_path='CPU-CPU',frame_format='plugin:'+name,thread_safe=True,batch_kind='cpu-single')
+        options=dict(options)
+        options.update(options.pop('by_dtype',{}).get(dtype,{}))
         if options['execution_path'] not in ('CPU-CPU','CPU-GPU','GPU-GPU'):raise ValueError('Invalid execution_path')
         if options['execution_path'].endswith('-GPU') and not options.get('file'):raise ValueError('GPU route requires a backend file')
         routes[name]=Route(name,plugin,folder,options,gpu.get(name) if options.get('use_gpu_frame') else None,dtype=dtype)

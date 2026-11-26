@@ -1,0 +1,6 @@
+{
+  "deepseek_fp8_e4m3fn.pt::zipnn": "Unsupported input dtype: fp8_e4m3fn",
+  "deepseek_fp8_e5m2.pt::zipnn": "Unsupported input dtype: fp8_e5m2",
+  "qwen_fp8_e4m3fn.pt::zipnn": "Unsupported input dtype: fp8_e4m3fn",
+  "qwen_fp8_e5m2.pt::zipnn": "Unsupported input dtype: fp8_e5m2"
+}
