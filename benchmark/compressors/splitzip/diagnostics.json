@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "gpu_cases": [
+    {"dtype": "bf16"},
+    {"dtype": "fp8_e4m3fn", "options": {"code_bits": 2}},
+    {"dtype": "fp8_e4m3fn", "options": {"code_bits": 3}},
+    {"dtype": "fp8_e5m2", "options": {"code_bits": 2}},
+    {"dtype": "fp8_e5m2", "options": {"code_bits": 3}},
+    {"dtype": "fp8_e5m2", "options": {"code_bits": 4}}
+  ]
+}

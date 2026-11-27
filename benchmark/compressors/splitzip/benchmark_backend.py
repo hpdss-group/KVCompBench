@@ -56,8 +56,9 @@ class Backend(CPUBackend):
         return packet(header,[self.api.tensor_bytes(getattr(value,k)) for k in ('pk','sm','chunk_id','local_pos','esc_val')])
 
     def prepare_decode(self,frames,sizes):
+        if len(frames)!=len(sizes):raise ValueError('SplitZip frame/size count mismatch')
         if self.fp8:return self._prepare_decode_fp8(frames,sizes)
-        torch=self.torch;packets=[unpacket(f) for f in frames];buffers=[]
+        torch=self.torch;packets=[self.api.decode_packet(f,size) for f,size in zip(frames,sizes)];buffers=[]
         for (h,parts),size in zip(packets,sizes):
             n=h['n'];esc=h['n_esc']
             if h['format']!='splitzip-packet-v1' or n*2!=size or not 0<=esc<=n or len(parts)!=5 or [len(p) for p in parts]!=[(n+1)//2,n,4*esc,2*esc,esc]:raise ValueError('Invalid SplitZip frame')
@@ -76,7 +77,7 @@ class Backend(CPUBackend):
         return dict(call=lambda:self.codec.decode(merged).view(torch.uint8),finish=lambda out:[out[start:start+size] for start,size in segments],keep=(host,device,merged))
 
     def _prepare_decode_fp8(self,frames,sizes):
-        torch=self.torch;packets=[unpacket(f) for f in frames]
+        torch=self.torch;packets=[self.api.decode_packet(f,size) for f,size in zip(frames,sizes)]
         first=packets[0][0];has16=bool(first['p16']);has8=bool(first['p8'])
         for (h,parts),size in zip(packets,sizes):
             if h.get('format')!='splitzip-fp8-packet-v1':raise ValueError('Invalid SplitZip FP8 frame')

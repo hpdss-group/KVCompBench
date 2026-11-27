@@ -1,7 +1,5 @@
 # Drop-in Codec Packages
 
-Each package also declares installation metadata in `install.json`. Use `python3 kvbench.py setup --codecs <names>` to install it and `python3 kvbench.py doctor --codecs <names>` to verify the interface. See [INSTALLATION.md](INSTALLATION.md) for pinned downloads, build commands, environment receipts and external installation locks. Third-party implementation sources belong in managed environment caches, not in the repository.
-
 ## Add a Python API Without Writing an Adapter
 
 Create this layout inside `benchmark/compressors/`:
@@ -9,7 +7,6 @@ Create this layout inside `benchmark/compressors/`:
 ```text
 my_codec/
 ├── codec.json
-├── install.json          # Pinned installation metadata
 ├── API.md                # Optional interface documentation
 └── requirements.txt      # Optional Python dependencies
 ```
@@ -120,10 +117,10 @@ The command template requires an actual `zstd` executable. Installing the `zstan
 
 ## Dependencies
 
-Declare exact Python requirements in the package's `install.json`. Its `package` field must match the folder name, including when copying a template. `requirements.txt` may remain as a reference, but managed setup uses the installation manifest:
+Put Python requirements in the package's `requirements.txt`. Install them into the environment selected by settings:
 
 ```bash
-python3 kvbench.py setup --codecs my-zlib
+python3 kvbench.py cli install-plugin-deps
 ```
 
 The normal environment setup scripts also install requirements from enabled packages. Requirements are not installed automatically during discovery or decompression. Native executables and library/system dependencies must be provided separately through the package or a compatible installed API.

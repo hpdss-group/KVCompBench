@@ -4,15 +4,15 @@
 <style>__REPORT_CSS__</style><main>
 <h1>BF16 KV Cache · 全量压缩测试</h1>
 <p>__SUMMARY__</p><div class="cards"><div class="card"><strong>__COUNT__</strong>数据集 × 配置结果</div><div class="card"><strong>__BLOCKS__</strong>已验证数据块</div></div>
-<label>显示指标<select id="metric"><option value="compression_ratio">压缩比（原始 / 压缩）</option><option value="encode_mib_s">编码吞吐量（MiB/s）</option><option value="decode_mib_s">解码吞吐量（MiB/s）</option><option value="encode_page_mib_s">编码页面吞吐量（MiB/s，含准备与传输）</option><option value="decode_page_mib_s">解码页面吞吐量（MiB/s，含准备与传输）</option></select></label>
+<label>显示指标<select id="metric"><option value="compression_ratio">压缩比（原始 / 压缩）</option><option value="encode_mib_s">编码吞吐量（GB/s）</option><option value="decode_mib_s">解码吞吐量（GB/s）</option><option value="encode_page_mib_s">编码页面吞吐量（GB/s，含准备与传输）</option><option value="decode_page_mib_s">解码页面吞吐量（GB/s，含准备与传输）</option></select></label>
 <label>解码端<select id="decoder"><option value="GPU">GPU 解码</option><option value="CPU">CPU 解码</option></select></label>
 <label>执行路径<select id="route"><option value="all">全部</option><option>CPU-CPU</option><option>CPU-GPU</option><option>GPU-GPU</option><option>GPU-CPU</option></select></label>
 <label>存储精度<select id="storage"><option value="all">全部</option></select></label>
 <button id="download">下载结果 CSV</button>
-<p>选择 CPU 或 GPU 解码端查看对应实测数据；没有对应方案或尚无实测结果时显示“/”。</p><div class="scroll"><table id="heatmap" aria-label="全量测试热力图"></table></div>
+<p>每列至少有一项符合当前筛选的实测值。个别缺值单元格显示“/”。列标题中的“编码批 / 解码批”是该 codec 每次调用处理的页数。</p><div class="scroll"><table id="heatmap" aria-label="全量测试热力图"></table></div>
 <div class="legend"><span>较低</span><span class="gradient"></span><span>较高（当前指标共用线性色标）</span></div>
 <p id="scale"></p><div id="detail" aria-live="polite">悬停、点击或使用 Tab 聚焦单元格，查看完整指标。</div>
-<p>CPU-GPU 表示 CPU 编码、GPU 解码；GPU-GPU 表示 GPU 编解码；CPU-CPU 表示 CPU 编解码。吞吐量统一按原始未压缩字节数除以对应计时时长计算，单位为 MiB/s。计时范围由结果记录的测试口径决定，不能将包含传输的端到端吞吐量当作纯 GPU 计算吞吐量。压缩比小于 1 表示输出膨胀。悬停列标题或选中单元格可查看该 codec 的独立备注。</p>
+<p>CPU-GPU 表示 CPU 编码、GPU 解码；GPU-GPU 表示 GPU 编解码；CPU-CPU 表示 CPU 编解码。吞吐量统一按原始未压缩字节数除以对应计时时长计算，显示单位为 GB/s（十进制，每 GB 为 10⁹ 字节）。下载的原始 CSV 仍以 MiB/s 记录吞吐。计时范围由结果记录的测试口径决定，不能将包含传输的端到端吞吐量当作纯 GPU 计算吞吐量。压缩比小于 1 表示输出膨胀。悬停列标题或选中单元格可查看该 codec 的独立备注。</p>
 <details><summary>查看原始 PNG 热力图</summary><div class="scroll"><img alt="原始全量热力图" src="data:image/png;base64,__PNG__"></div></details>
 <details><summary>未运行的 codec / Unavailable codecs</summary><pre id="unavailable"></pre></details><footer>来源：__SOURCE__ · 报告生成：__TIME__ · 数据与图片内嵌，可离线打开。</footer>
 </main><script>__REPORT_JS__</script></html>

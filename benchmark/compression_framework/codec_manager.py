@@ -7,6 +7,8 @@ import configparser
 from contextlib import ExitStack
 from functools import lru_cache
 import ctypes
+import csv
+import io
 import hashlib
 import importlib.metadata as md
 import importlib.util
@@ -37,18 +39,54 @@ def digest(path):
     return h.hexdigest()
 
 
-@lru_cache(maxsize=512)
+_HASH_CACHE = None
+
+
 def _binary_digest(path, size, modified_ns):
-    return digest(path)
+    """Reuse verified contents only while file identity and timestamps match."""
+    global _HASH_CACHE
+    cache_path = Path(sys.prefix) / 'kvcompbench/hash-cache.json'
+    if _HASH_CACHE is None:
+        try:
+            data = json.loads(cache_path.read_text(encoding='utf-8'))
+            _HASH_CACHE = data['files'] if data.get('schema_version') == 1 else {}
+        except (OSError, ValueError, KeyError):
+            _HASH_CACHE = {}
+    target = Path(path)
+    before = target.stat()
+    stamp = [before.st_dev, before.st_ino, before.st_size, before.st_mtime_ns, before.st_ctime_ns]
+    cached = _HASH_CACHE.get(str(path), {})
+    if (os.environ.get('KVCOMPBENCH_REHASH') != '1' and cached.get('stat') == stamp
+            and re.fullmatch('[0-9a-f]{64}', str(cached.get('sha256', '')))):
+        return cached['sha256']
+    result = digest(target)
+    after = target.stat()
+    if stamp != [after.st_dev, after.st_ino, after.st_size, after.st_mtime_ns, after.st_ctime_ns]:
+        raise ValueError('Binary changed while hashing: ' + str(path))
+    _HASH_CACHE[str(path)] = dict(stat=stamp, sha256=result)
+    if cache_path.parent.is_dir():
+        try:
+            # Concurrent writers may lose cache hits, but never fabricate hashes.
+            temporary = cache_path.with_name(cache_path.name + '.' + str(os.getpid()) + '.tmp')
+            temporary.write_text(json.dumps(dict(schema_version=1, files=_HASH_CACHE)), encoding='utf-8')
+            temporary.replace(cache_path)
+        except OSError:
+            pass  # Read-only environments retain the in-process cache.
+    return result
 
 
 def native_files(distribution):
     files = {}
-    for relative in distribution.files or []:
+    # Python 3.12 Distribution.files checks existence of *every* wheel member.
+    # Filter RECORD first; otherwise a large PyTorch wheel causes thousands of
+    # expensive DrvFS stat calls before the first native library is inspected.
+    record = distribution.read_text('RECORD')
+    candidates = (row[0] for row in csv.reader(io.StringIO(record)) if row) if record is not None else distribution.files or []
+    for relative in candidates:
         name = str(relative).lower()
         if not name.endswith(('.so', '.pyd', '.dll', '.dylib')) and '.so.' not in name:
             continue
-        path = distribution.locate_file(relative).resolve()
+        path = distribution.locate_file(relative).absolute()
         if not path.is_file():
             raise ValueError('Missing installed native dependency: ' + str(path))
         stat = path.stat()
@@ -70,6 +108,19 @@ def atomic_json(path, value):
     temporary = path.with_suffix(path.suffix + '.tmp')
     temporary.write_text(json.dumps(value, indent=2, sort_keys=True) + '\n', encoding='utf-8')
     temporary.replace(path)
+
+
+def recipe_fingerprint(manifest):
+    """Executable installation recipe; mirror URLs/documentation are provenance."""
+    def normalized(value):
+        if isinstance(value, dict):
+            return {k: normalized(v) for k, v in value.items()
+                    if k not in ('url', 'repository', 'description', 'timeout_seconds')}
+        if isinstance(value, list):
+            return [normalized(v) for v in value]
+        return value
+    return hashlib.sha256(json.dumps(normalized(manifest), sort_keys=True,
+                                      separators=(',', ':')).encode()).hexdigest()
 
 
 def inventory(directory=None):
@@ -248,6 +299,15 @@ def write_verified(path, raw, expected):
 
 
 def fetch_sources(spec, destination, cache):
+    missing = False
+    for relative, item in spec.get('files', {}).items():
+        target = contained(destination, relative)
+        if not target.exists():
+            missing = True
+        elif not target.is_file() or digest(target) != item.get('installed_sha256', item['sha256']):
+            raise ValueError('Existing managed source has changed: ' + str(target))
+    if spec.get('files') and not missing:
+        return destination
     archives = {name: download(item, cache) for name, item in spec.get('archives', {}).items()}
     with ExitStack() as stack:
         opened = {name: stack.enter_context(tarfile.open(path)) for name, path in archives.items()}
@@ -361,7 +421,9 @@ def reusable_receipt(path, info, prefix):
     if not path.is_file() or not info['manifest'].get('outputs'):
         return None
     receipt = json.loads(path.read_text(encoding='utf-8'))
-    if not receipt.get('complete') or receipt.get('manifest_sha256') != info['manifest_sha256'] or receipt.get('revision') != info['manifest']['revision']:
+    same_recipe = (receipt.get('recipe_sha256') == recipe_fingerprint(info['manifest'])
+                   if receipt.get('recipe_sha256') else receipt.get('manifest_sha256') == info['manifest_sha256'])
+    if not receipt.get('complete') or not same_recipe or receipt.get('revision') != info['manifest']['revision']:
         return None
     artifacts = receipt.get('artifacts', {})
     if not set(info['manifest']['outputs']) <= artifacts.keys():
@@ -433,7 +495,9 @@ def identity(codec, gpu=False, enforce=True, directory=None):
             errors.append('Installed upstream revision does not match manifest')
         if not external and not evidence.get('complete'):
             errors.append('Incomplete installation receipt')
-        if not external and evidence.get('manifest_sha256') != info['manifest_sha256']:
+        same_recipe = (evidence.get('recipe_sha256') == recipe_fingerprint(manifest)
+                       if evidence.get('recipe_sha256') else evidence.get('manifest_sha256') == info['manifest_sha256'])
+        if not external and not same_recipe:
             errors.append('Installation manifest changed; reinstall selected codec')
     for relative, expected in manifest.get('build_inputs', {}).items():
         path = contained(info['folder'], relative)
@@ -453,10 +517,16 @@ def identity(codec, gpu=False, enforce=True, directory=None):
                 if not evidence or evidence.get('artifacts', {}).get(relative) != actual:
                     errors.append('Unverified/changed artifact: ' + str(path))
         source_base = _source_root(package, info)
+        result['sources'] = {}
         for relative, item in manifest.get('sources', {}).get('files', {}).items():
             path = _source_file(relative, item, source_base, external)
             if not path.is_file() or digest(path) != item.get('installed_sha256', item['sha256']):
                 errors.append('Missing/changed pinned source: ' + str(path))
+            elif path.is_file():
+                result['sources'][relative] = dict(path=str(path), sha256=digest(path))
+    result['recipe_sha256'] = recipe_fingerprint(manifest)
+    result['build_configuration'] = {key: manifest[key] for key in ('commands', 'build_inputs') if key in manifest}
+    result['compiler_versions'] = sorted((evidence or {}).get('tools', {}).values())
     result.update(origin='external' if external else ('managed' if receipt else 'interpreter'),
                   version_evidence='external declared revision + verified hashes' if external else 'manifest + installed metadata',
                   build_tools=(evidence or {}).get('tools', {}),
@@ -496,7 +566,7 @@ def diagnose(names, gpu=False, correctness=False):
                 try:
                     if gpu and (report['declared_interfaces']['gpu_decode'] or report['declared_interfaces']['gpu_encode']) and not os.environ.get('CUDA_VISIBLE_DEVICES', '').strip():
                         raise RuntimeError('GPU checks require an explicitly assigned CUDA_VISIBLE_DEVICES')
-                    dtype = next((d for d in ('bf16', 'fp32', 'fp64', 'uint8', 'bytes') if plugins[name].supports({'dtype': d})), None)
+                    dtype = next((d for d in ('bf16', 'fp8_e4m3fn', 'fp8_e5m2', 'fp32', 'fp64', 'uint8', 'bytes') if plugins[name].supports({'dtype': d})), None)
                     if dtype is None:
                         raise ValueError('No supported diagnostic dtype')
                     unit = {'bf16': struct.pack('<5H', 0, 0x8000, 0x3f80, 0x7fc1, 0x7f80),
@@ -512,27 +582,14 @@ def diagnose(names, gpu=False, correctness=False):
                     if gpu:
                         if not report['declared_interfaces']['gpu_decode']:
                             report['gpu'] = 'not_supported'
-                        elif dtype != 'bf16':
-                            report['gpu'] = 'not_supported_for_bf16'
                         else:
-                            from benchmark_routes import select_routes
-                            from codec_timing import Encoder
-                            from batch_decode import BatchDecoder
-                            route = select_routes(PACKAGES, execution_device='declared', codecs=name)[name]
-                            if not route.mode.endswith('-GPU'):
-                                report['gpu'] = 'not_supported'
-                            else:
-                                raw = unit * 1025
-                                runtime = route.runtime()
-                                encoder = Encoder(runtime, raw)
-                                frames = [encoder.measure(raw)[0] for _ in range(2)]
-                                decoded, _, _ = BatchDecoder(runtime).submit(frames, [len(raw)] * 2).finish()
-                                if decoded != [raw, raw]:
-                                    raise ValueError('GPU byte-exact round trip failed')
-                                decoder = runtime.cpu_decoder()
-                                if decoder and any(decoder(f, len(raw)) != raw for f in frames):
-                                    raise ValueError('Compatible CPU frame round trip failed')
-                                report['gpu'] = 'verified'
+                            from gpu_diagnostics import check_gpu
+                            checks = check_gpu(name, plugins[name], info['folder'], PACKAGES)
+                            report['gpu_checks'] = checks
+                            failed = [item for item in checks if item['status'] != 'verified']
+                            if failed:
+                                raise ValueError('; '.join(item['dtype'] + ' ' + str(item['options']) + ': ' + item['error'] for item in failed))
+                            report['gpu'] = 'verified' if checks else 'not_supported'
                 except Exception as error:
                     report['status'] = 'failed'
                     report['errors'].append(type(error).__name__ + ': ' + str(error))
@@ -540,9 +597,11 @@ def diagnose(names, gpu=False, correctness=False):
     return reports
 
 
-def install(names, profile='cpu', plan=False, base=True):
+def install(names, profile='cpu', plan=False, base=True, environment_name=None):
     selected, packages = select(names)
-    env_name = platform_id() + '-managed-' + profile
+    env_name = environment_name or platform_id() + '-managed-' + profile
+    if Path(env_name).name != env_name or env_name in ('.', '..'):
+        raise ValueError('Invalid environment name')
     prefix = ROOT / '.venvs' / env_name
     python = prefix / ('Scripts/python.exe' if os.name == 'nt' else 'bin/python')
     requirements = sorted({r for info in packages.values() for r in
@@ -629,13 +688,18 @@ def install(names, profile='cpu', plan=False, base=True):
                     versions = subprocess.check_output([str(python), '-m', 'pip', 'freeze'], env=environment, text=True, timeout=120)
                 atomic_json(record_path, dict(package=name, complete=True, revision=manifest['revision'],
                                              manifest_sha256=info['manifest_sha256'], artifacts=artifacts,
+                                             recipe_sha256=recipe_fingerprint(manifest),
                                              python=str(python), tools=tools, dependencies=versions.splitlines(),
                                              reused_build=bool(previous)))
             run([python, '-m', 'pip', 'check'], ROOT, environment, log)
         settings = ROOT / 'benchmark/settings.txt'
         c = configparser.ConfigParser(interpolation=None)
         c.read(settings if settings.exists() else ROOT / 'benchmark/settings.example.txt', encoding='utf-8')
+        distribution = c.get('environment', 'wsl_distribution', fallback='').strip()
         c['environment'] = {'name': env_name}
+        if distribution:
+            c['environment']['wsl_distribution'] = distribution
+            c['environment']['wsl_env_path'] = str(prefix)
         with settings.open('w', encoding='utf-8') as handle:
             c.write(handle)
         return dict(codecs=selected, prefix=str(prefix), python=str(python), log=str(log_path))
@@ -649,6 +713,7 @@ def main():
     parser.add_argument('--codecs')
     parser.add_argument('--device', choices=['cpu', 'cuda13'], default='cpu')
     parser.add_argument('--plan', action='store_true')
+    parser.add_argument('--env', help='Explicit project-local environment to install into')
     parser.add_argument('--gpu', action='store_true')
     parser.add_argument('--report', type=Path)
     args = parser.parse_args()
@@ -656,7 +721,7 @@ def main():
     if args.command == 'status' and names is None:
         names = ','.join(e['name'] for value in inventory().values() for e in value['entries'])
     if args.command == 'setup':
-        result = install(args.codecs, args.device, args.plan)
+        result = install(args.codecs, args.device, args.plan, environment_name=args.env)
     else:
         result = diagnose(names, gpu=args.gpu, correctness=args.command == 'doctor')
     if args.report:

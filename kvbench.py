@@ -40,6 +40,38 @@ def environment(settings):
 def call(args,env=None):
     return subprocess.run(list(map(str,args)),cwd=ROOT,env=env,check=True)
 
+
+def wsl_path(value):
+    value = str(value)
+    if len(value) >= 3 and value[1] == ':' and value[2] in ('/', '\\'):
+        return '/mnt/' + value[0].lower() + value[2:].replace('\\', '/')
+    return value
+
+
+def wsl_command(args, settings, argv):
+    """Honor the existing Windows launch configuration for a Linux environment."""
+    if os.name != 'nt' or (args.command == 'codecs' and not args.status):
+        return None
+    if args.command == 'setup':
+        if args.python and not str(args.python).startswith('/'):
+            return None
+        if args.external:
+            lock = json.loads(args.external.read_text(encoding='utf-8'))
+            if not str(lock.get('python', '')).startswith('/'):
+                return None
+    c = configuration(settings)
+    distribution = c.get('environment', 'wsl_distribution', fallback='').strip()
+    if not distribution:
+        return None
+    prefix = c.get('environment', 'wsl_env_path', fallback='').strip()
+    python = 'python3' if args.command == 'setup' else prefix.rstrip('/') + '/bin/python' if prefix else wsl_path(ROOT / '.venvs' / c.get('environment', 'name')) + '/bin/python'
+    command = ['wsl.exe', '--distribution', distribution, '--cd', wsl_path(ROOT), '--exec', 'env']
+    for key in ('CUDA_VISIBLE_DEVICES', 'KVCOMPBENCH_EXTERNAL_LOCK', 'KVCOMPBENCH_REHASH'):
+        if key in os.environ:
+            command.append(key + '=' + (wsl_path(os.environ[key]) if key.endswith('_LOCK') else os.environ[key]))
+    command += [python, '-B', wsl_path(ROOT / 'kvbench.py'), *map(wsl_path, argv)]
+    return command
+
 def main():
     from codec_manager import install,inventory,select
     parser=argparse.ArgumentParser(description=__doc__)
@@ -48,6 +80,7 @@ def main():
     setup.add_argument('--codecs')
     setup.add_argument('--device',choices=['cpu','cuda13'],default='cpu')
     setup.add_argument('--plan',action='store_true',help='Show plan without downloads or installation')
+    setup.add_argument('--env',help='Explicit project-local environment to install into')
     setup.add_argument('--optional',action='store_true',help='Compatibility alias: all packages with CUDA13')
     setup.add_argument('--external',type=Path,help='Validate an existing interpreter/native installation lock JSON')
     setup.add_argument('--python',type=Path,help='Explicit existing interpreter (native/source codecs also require --external)')
@@ -61,12 +94,19 @@ def main():
     doctor.add_argument('--report',type=Path)
     args,extra=parser.parse_known_args()
     if args.command not in ('run','cli') and extra:parser.error('Unexpected arguments: '+' '.join(extra))
+    settings = config_path(getattr(args, 'settings', None))
+    if settings.exists():
+        delegated = wsl_command(args, settings, sys.argv[1:])
+        if delegated:
+            call(delegated)
+            return
     if args.command=='setup':
         names=args.codecs
         if args.optional:
             if names or args.external or args.python:parser.error('--optional cannot be combined with --codecs or external installation options')
             names=','.join(inventory());args.device='cuda13'
         if args.external or args.python:
+            if args.env:parser.error('--env cannot be combined with an external installation')
             if args.plan:parser.error('--external validation does not use --plan')
             if args.external and args.python:parser.error('Use either --external or --python')
             path=args.external.resolve() if args.external else None
@@ -79,12 +119,17 @@ def main():
             else:env.pop('KVCOMPBENCH_EXTERNAL_LOCK',None)
             names=','.join(select(names)[0])
             call([py,'-B',FRAMEWORK/'codec_manager.py','doctor','--codecs',names],env)
-            c=configuration(basic_settings());c['environment']={'name':'external','python':str(py)}
+            c=configuration(basic_settings())
+            distribution=c.get('environment','wsl_distribution',fallback='')
+            c['environment']={'name':'external','python':str(py)}
+            if distribution:
+                c['environment']['wsl_distribution']=distribution
+                c['environment']['wsl_env_path']=str(py.parent.parent)
             if path:c['environment']['external_lock']=str(path)
             with DEFAULT.open('w',encoding='utf-8') as f:c.write(f)
             print('Validated external environment selected:',py)
         else:
-            result=install(names,args.device,args.plan);print(json.dumps(result,indent=2))
+            result=install(names,args.device,args.plan,environment_name=args.env);print(json.dumps(result,indent=2))
             if not args.plan:
                 call([result['python'],'-B',FRAMEWORK/'codec_manager.py','doctor','--codecs',','.join(result['codecs']),
                       '--report',Path(result['prefix'])/'kvcompbench/doctor.json'])

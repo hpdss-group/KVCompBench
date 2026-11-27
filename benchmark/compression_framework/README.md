@@ -12,4 +12,4 @@ python3 kvbench.py cli decompress kv.kvc restored.raw
 
 The default installation uses CPU PyTorch and core dependencies. Optional codec dependencies and GPU execution require the corresponding environment and an assigned device. `benchmark/settings.txt` is local configuration and is not published.
 
-The runner schedules pages, measures codec and page timing, verifies decoded bytes and maintains fingerprinted JSONL journals. Codec directories own their declarations and implementations. See [PLUGINS.md](PLUGINS.md) for plugin APIs and [INSTALLATION.md](INSTALLATION.md) for managed installation and diagnostics.
+The runner schedules pages, measures codec and page timing, verifies decoded bytes and maintains fingerprinted JSONL journals. Codec directories own their declarations and implementations. See [PLUGINS.md](PLUGINS.md) for plugin APIs and [PAPER_CODECS.md](PAPER_CODECS.md) for optional implementations.

@@ -1,0 +1,210 @@
+[
+  {
+    "experiment": "128_128",
+    "status": "complete",
+    "completed_utc_epoch": 1795758424.0795877,
+    "gpu_uuid": "GPU-8821459f-2e9c-7abe-cb19-0f34795e52c2",
+    "gpu_index": null,
+    "rows": 236,
+    "verified": true,
+    "actual_gpu_encode_batch_blocks": [
+      128
+    ],
+    "requested": {
+      "encode_batch_blocks": "128",
+      "cpu_encode_threads": "1",
+      "decode_batch_blocks": "128",
+      "skip_unavailable_codecs": "false",
+      "codec_set": "all",
+      "codecs": "",
+      "execution_device": "declared"
+    },
+    "codec_timing_versions": [
+      "codec_call_v4_scaled_fp8_shared_encode"
+    ],
+    "raw_result_sha256": "b4db0e367bff29a464c45496512c32706ec88de966d8b8477db461041eea4df7"
+  },
+  {
+    "experiment": "128_256",
+    "status": "complete",
+    "completed_utc_epoch": 1795772813.2856483,
+    "gpu_uuid": "GPU-1ed6b59b-d882-5cd9-c540-f71177abf326",
+    "gpu_index": 5,
+    "rows": 236,
+    "verified": true,
+    "actual_gpu_encode_batch_blocks": [
+      128
+    ],
+    "requested": {
+      "encode_batch_blocks": "128",
+      "cpu_encode_threads": "1",
+      "decode_batch_blocks": "256",
+      "skip_unavailable_codecs": "false",
+      "codec_set": "all",
+      "codecs": "",
+      "execution_device": "declared"
+    },
+    "codec_timing_versions": [
+      "codec_call_v4_scaled_fp8_shared_encode"
+    ],
+    "raw_result_sha256": "9c0c0a7b803cda9d7155620847eb3387555747a4e96d6a359cba18727d2df8f3"
+  },
+  {
+    "experiment": "128_512",
+    "status": "complete",
+    "completed_utc_epoch": 1795772564.4729128,
+    "gpu_uuid": "GPU-d4e8f72a-044b-a24e-818f-0560f0b97483",
+    "gpu_index": 6,
+    "rows": 236,
+    "verified": true,
+    "actual_gpu_encode_batch_blocks": [
+      128
+    ],
+    "requested": {
+      "encode_batch_blocks": "128",
+      "cpu_encode_threads": "1",
+      "decode_batch_blocks": "512",
+      "skip_unavailable_codecs": "false",
+      "codec_set": "all",
+      "codecs": "",
+      "execution_device": "declared"
+    },
+    "codec_timing_versions": [
+      "codec_call_v4_scaled_fp8_shared_encode"
+    ],
+    "raw_result_sha256": "dc436bfc9ecb34e375831c90dade79605569f1b40b3deb881ca8624c3d0b727d"
+  },
+  {
+    "experiment": "128_1024",
+    "status": "complete",
+    "completed_utc_epoch": 1795780009.1684647,
+    "gpu_uuid": "GPU-8821459f-2e9c-7abe-cb19-0f34795e52c2",
+    "gpu_index": 0,
+    "rows": 236,
+    "verified": true,
+    "actual_gpu_encode_batch_blocks": [
+      128
+    ],
+    "requested": {
+      "encode_batch_blocks": "128",
+      "cpu_encode_threads": "1",
+      "decode_batch_blocks": "1024",
+      "skip_unavailable_codecs": "false",
+      "codec_set": "all",
+      "codecs": "",
+      "execution_device": "declared"
+    },
+    "codec_timing_versions": [
+      "codec_call_v4_scaled_fp8_shared_encode"
+    ],
+    "raw_result_sha256": "01919b05af0aa6da0cd6a45ed795265df8b5c75e50e249fe1ba5e37818c1373a"
+  },
+  {
+    "experiment": "256_128",
+    "status": "complete",
+    "completed_utc_epoch": 1795779085.5908093,
+    "gpu_uuid": "GPU-1ed6b59b-d882-5cd9-c540-f71177abf326",
+    "gpu_index": 5,
+    "rows": 236,
+    "verified": true,
+    "actual_gpu_encode_batch_blocks": [
+      250,
+      256
+    ],
+    "requested": {
+      "encode_batch_blocks": "256",
+      "cpu_encode_threads": "1",
+      "decode_batch_blocks": "128",
+      "skip_unavailable_codecs": "false",
+      "codec_set": "all",
+      "codecs": "",
+      "execution_device": "declared"
+    },
+    "codec_timing_versions": [
+      "codec_call_v4_scaled_fp8_shared_encode"
+    ],
+    "raw_result_sha256": "7371c3f47c33e1150540f94ac8282b2bc1e5fcef6be53a358368407dd89e912a"
+  },
+  {
+    "experiment": "512_128",
+    "status": "complete",
+    "completed_utc_epoch": 1795779124.274536,
+    "gpu_uuid": "GPU-d4e8f72a-044b-a24e-818f-0560f0b97483",
+    "gpu_index": 6,
+    "rows": 236,
+    "verified": true,
+    "actual_gpu_encode_batch_blocks": [
+      250,
+      512
+    ],
+    "requested": {
+      "encode_batch_blocks": "512",
+      "cpu_encode_threads": "1",
+      "decode_batch_blocks": "128",
+      "skip_unavailable_codecs": "false",
+      "codec_set": "all",
+      "codecs": "",
+      "execution_device": "declared"
+    },
+    "codec_timing_versions": [
+      "codec_call_v4_scaled_fp8_shared_encode"
+    ],
+    "raw_result_sha256": "3a4bbc1484a6517990e89131b830fa816f3a11973d7fdef698c882e11a376992"
+  },
+  {
+    "experiment": "1024_1024",
+    "status": "complete",
+    "completed_utc_epoch": 1795783497.9818275,
+    "gpu_uuid": "GPU-44cfdc76-9dc0-0f1f-cb4f-bc8f4ccfd0da",
+    "gpu_index": 1,
+    "rows": 236,
+    "verified": true,
+    "actual_gpu_encode_batch_blocks": [
+      250,
+      512
+    ],
+    "requested": {
+      "encode_batch_blocks": "1024",
+      "cpu_encode_threads": "1",
+      "decode_batch_blocks": "1024",
+      "skip_unavailable_codecs": "false",
+      "codec_set": "all",
+      "codecs": "",
+      "execution_device": "declared"
+    },
+    "codec_timing_versions": [
+      "codec_call_v4_scaled_fp8_shared_encode"
+    ],
+    "raw_result_sha256": "ac4897a3ce32b2144af07613779f371db150bc12f410f5932953ca377fd972e8"
+  },
+  {
+    "experiment": "max",
+    "status": "complete",
+    "completed_utc_epoch": 1795795649.1606693,
+    "gpu_uuid": "GPU-01353343-54aa-25f3-79ef-3ddb242fedc4",
+    "gpu_index": 2,
+    "rows": 236,
+    "verified": true,
+    "actual_gpu_encode_batch_blocks": [
+      1024,
+      1290,
+      4096,
+      5074
+    ],
+    "requested": {
+      "encode_batch_blocks": "max",
+      "cpu_encode_threads": "1",
+      "decode_batch_blocks": "max",
+      "skip_unavailable_codecs": "false",
+      "codec_set": "all",
+      "codecs": "",
+      "execution_device": "declared",
+      "max_batch_bytes": "max",
+      "max_batch_memory_fraction": "0.5"
+    },
+    "codec_timing_versions": [
+      "codec_call_v4_scaled_fp8_shared_encode"
+    ],
+    "raw_result_sha256": "8bdbffe97857edb6ceb3802529d8c0c572e1a0236a20b9ee7a6e142ab5fee565"
+  }
+]

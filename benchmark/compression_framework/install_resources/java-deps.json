@@ -1,0 +1,12 @@
+[
+  {
+    "name": "dsiutils-2.7.0.jar",
+    "url": "https://repo.maven.apache.org/maven2/it/unimi/dsi/dsiutils/2.7.0/dsiutils-2.7.0.jar",
+    "sha256": "613509560c3e29fea026000a02b56e6bad19b7ef70dceacb0f1c964790e5927f"
+  },
+  {
+    "name": "fastutil-8.4.4.jar",
+    "url": "https://repo.maven.apache.org/maven2/it/unimi/dsi/fastutil/8.4.4/fastutil-8.4.4.jar",
+    "sha256": "3d7981b838c8fe8d8f1ef93c9ee4ebf6bd1091cc1c5847fe41db22d1648081e3"
+  }
+]

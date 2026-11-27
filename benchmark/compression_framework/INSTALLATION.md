@@ -121,3 +121,35 @@ On 2026-11-17, a separate Linux x86-64 environment with Python 3.10.12, PyTorch 
 An additional mixed-size GPU batch check passed for SplitZip, OpenZL, all nine nvCOMP algorithms, three Zstd levels, LZ4, Snappy, Gzip and Zlib. Each batch contained 10-, 70- and 10,250-byte tails, a 512 KiB page and 1 MiB of deterministic random bytes. GPU-decoded bytes and compatible CPU decoding were checked against the original bytes. These are correctness checks, not throughput measurements or a rerun of the published BF16 dataset results.
 
 The checks exposed tail-byte loss with Cascaded's default logical input type. Its configuration now explicitly requests `data_type = "|u1"` and declares the `nvcomp-native:cascaded:u8` frame format; both the direct codec API and benchmark backend use the configured options. The failing tail case and mixed-size batch then passed. An external installation with an incorrect declared revision was also rejected before codec execution.
+
+
+## Existing project environments and source release
+
+An explicitly named project-local environment can be updated without selecting a new prefix:
+
+```bash
+python3 kvbench.py setup --codecs splitzip --device cuda13 --env linux-x86_64-paper-cuda13
+```
+
+The environment name must be a single path component. Setup still verifies pinned dependencies and source contents, records installation receipts, and retains WSL routing settings. A complete managed-source cache is reused only when every installed source hash matches its Manifest.
+
+Third-party source trees and historical source archives belong outside `benchmark/compressors`. Local historical copies are kept under `.repository_archive/`, which is excluded from version control. The legacy `setup_paper_codecs.py` entry point now delegates to the same Manifest installer.
+
+```bash
+python3 scripts/export_source.py --output benchmark/output/kvcompbench-source.zip
+```
+
+The exporter rejects remaining `upstream`, `dependencies` or `tmp` directories inside Codec packages. The release includes project adapters, bridges, Manifests and tests, plus a per-file SHA-256 inventory. Data, settings, environments, results, archives and compiled third-party artifacts are excluded.
+
+## GPU diagnostic matrix
+
+`doctor --gpu --codecs splitzip` runs BF16 plus FP8 E4M3FN at 2/3 bits and FP8 E5M2 at 2/3/4 bits. `diagnostics.json` declares these cases. Each case checks actual GPU encoding, three-page joined encoding, mixed-size batch decoding, tails and bit-exact restoration. Compatible CPU decoders are checked when declared. E4M3FN 4-bit encoding is unsupported by this adapter and is not reported as verified.
+
+
+## Native-library integrity cache
+
+Managed environments cache computed native-library SHA-256 values in `kvcompbench/hash-cache.json`. Cache hits require matching device, inode, size, modification time and change time. Changed metadata causes the contents to be hashed again; the returned measurement identity always contains the content SHA-256. Concurrent cache writers can lose cache hits without changing results.
+
+Set `KVCOMPBENCH_REHASH=1` for a full content recheck. The Windows entry point forwards this flag to WSL. The cache is not a defense against an attacker who can edit both files and cache metadata.
+
+Wheel inventories are filtered from `RECORD` before checking native files. This avoids Python 3.12 checking every Python source file in a large PyTorch wheel over a WSL mounted drive. Native-file existence and actual hashes are still verified.

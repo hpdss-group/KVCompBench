@@ -109,10 +109,53 @@ def compress_fp8(raw,metadata):
     return packet(header,parts)
 
 
+def decode_packet(data, expected_bytes):
+    """Parse a SplitZip frame against its caller-supplied output byte count.
+
+    BF16 escape offsets can occupy up to twice the raw byte count. FP8 planes
+    and escapes also fit this bound. Exact format dimensions are checked below;
+    the shared parser still checks header limits, integer lengths and bounds.
+    """
+    if type(expected_bytes) is not int or expected_bytes < 0:
+        raise ValueError('Invalid SplitZip expected output size')
+    try:
+        header, parts = unpacket(data, maximum=2 * expected_bytes)
+    except (KeyError, TypeError) as error:
+        raise ValueError('Invalid SplitZip packet header') from error
+    fmt = header.get('format')
+    n, esc = header.get('n'), header.get('n_esc')
+    if type(n) is not int or type(esc) is not int or not 0 <= esc <= n:
+        raise ValueError('Invalid SplitZip dimensions')
+    if fmt == 'splitzip-packet-v1':
+        chunk = header.get('chunk_size')
+        if n * 2 != expected_bytes or type(chunk) is not int or chunk < 1:
+            raise ValueError('Invalid SplitZip dimensions')
+        lengths = [(n + 1) // 2, n, 4 * esc, 2 * esc, esc]
+    elif fmt == 'splitzip-fp8-packet-v1':
+        bits = header.get('code_bits')
+        if n != expected_bytes or header.get('fmt') not in ('e4m3', 'e5m2') or type(bits) is not int or bits not in (2, 3, 4):
+            raise ValueError('Invalid SplitZip FP8 dimensions')
+        if type(header.get('p16')) is not bool or type(header.get('p8')) is not bool:
+            raise ValueError('Invalid SplitZip FP8 planes')
+        nch = nch_for(n)
+        lanes = nch * (FP8_CHUNK // 8)
+        lengths = [lanes * 4]
+        if header['p16']:
+            lengths.append(lanes * 2)
+        if header['p8']:
+            lengths.append(lanes)
+        lengths += [nch * 2, esc * 2, n - nch * FP8_CHUNK]
+    else:
+        raise ValueError('Invalid SplitZip packet format')
+    if [len(part) for part in parts] != lengths:
+        raise ValueError('Invalid SplitZip buffer sizes')
+    return header, parts
+
+
 def decompress(data,expected_bytes,metadata):
-    header,_=unpacket(data)
+    header,_=decode_packet(data,expected_bytes)
     if header.get('format')=='splitzip-fp8-packet-v1':return decompress_fp8(data,expected_bytes,metadata)
-    torch=runtime();module=upstream();header,parts=unpacket(data)
+    torch=runtime();module=upstream();header,parts=decode_packet(data,expected_bytes)
     n,esc,chunk=header['n'],header['n_esc'],header['chunk_size']
     if header['format']!='splitzip-packet-v1' or type(n)is not int or n*2!=expected_bytes or type(esc)is not int or not 0<=esc<=n:
         raise ValueError('Invalid SplitZip dimensions')
@@ -133,7 +176,7 @@ def decompress(data,expected_bytes,metadata):
 
 
 def decompress_fp8(data,expected_bytes,metadata):
-    torch=runtime();module=upstream_fp8();header,parts=unpacket(data)
+    torch=runtime();module=upstream_fp8();header,parts=decode_packet(data,expected_bytes)
     fmt,bits,n,nesc=header.get('fmt'),header.get('code_bits'),header.get('n'),header.get('n_esc')
     has16,has8=bool(header.get('p16')),bool(header.get('p8'))
     if header.get('format')!='splitzip-fp8-packet-v1' or fmt not in ('e4m3','e5m2') or bits not in (2,3,4):

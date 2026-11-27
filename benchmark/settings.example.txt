@@ -1,6 +1,5 @@
-# Copy to settings.txt and edit locally. KV page sizes override flat block bytes.
 [environment]
-name = linux-x86_64-managed-cpu
+name = linux-x86_64-basic-cpu
 
 [benchmark_datasets]
 deepseek_bf16.pt = 131072
@@ -11,10 +10,16 @@ qwen_fp8_e4m3fn.pt = 532480
 qwen_fp8_e5m2.pt = 532480
 
 [benchmark]
+# GPU batches accept 1..4096 or max. CPU APIs remain single-page.
+encode_batch_blocks = 1
+# max removes the fixed raw-byte cap for GPU automatic selection.
+max_batch_bytes = 536870912
+max_batch_memory_fraction = 0.5
+# Keep compressed frames for decoder-only remeasurement.
+retain_frames = true
 cpu_encode_threads = 1
 decode_batch_blocks = 256
 codec_set = core
-# Explicit codec names override codec_set. Blank uses the group.
 codecs = identity, gzip, zlib, bz2, lzma
 execution_device = cpu
 skip_unavailable_codecs = false

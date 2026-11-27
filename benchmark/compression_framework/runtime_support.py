@@ -5,7 +5,7 @@ from packaging.requirements import Requirement
 
 def unavailable(route,compressors):
     from codec_manager import identity
-    report=identity(route.name,gpu=route.mode.endswith('-GPU'),enforce=False)
+    report=identity(route.name,gpu=route.mode.endswith('-GPU'),enforce=False,directory=compressors)
     if report['errors']:return '; '.join(report['errors'])
     base=Path(compressors).resolve()
     for manifest in base.glob('*/codec.json'):
@@ -34,7 +34,8 @@ def unavailable(route,compressors):
         library=entry.get('native_library')
         if library:
             if Path(library).name!=library:raise ValueError('Invalid native library name')
-            target=Path(sys.prefix)/'native'/library/('codec.dll' if os.name=='nt' else 'libcodec.so')
+            from codec_manager import artifact_path
+            target=artifact_path(library,'native/'+library+'/'+('codec.dll' if os.name=='nt' else 'libcodec.so'))
             if not target.is_file():return 'Missing native library: '+str(target)
         return None
     return None

@@ -87,14 +87,16 @@
     "execution_path": "GPU-GPU",
     "frame_format": "nvcomp-native:cascaded:u8",
     "algorithm": "Cascaded",
-    "codec_options": {"data_type": "|u1"},
     "raw": false,
     "file": "benchmark_backend.py",
     "batch_kind": "nvcomp-batch",
     "thread_safe": false,
     "packages": [
       "nvidia-nvcomp-cu13"
-    ]
+    ],
+    "codec_options": {
+      "data_type": "|u1"
+    }
   },
   "nvcomp-gzip": {
     "execution_path": "GPU-GPU",

@@ -1,12 +1,24 @@
 """PNG renderer and compatibility entrypoint for the generic benchmark."""
 import struct,zlib
 
+BACKGROUND=(247,249,252,255)
+INK=(22,38,56,255)
+MUTED=(90,110,130,255)
+
+def _cell_color(scale):
+    # light teal ramp: pale mint -> deep teal, readable on a light page
+    return (int(230-214*scale), int(244-122*scale), int(240-134*scale), 255)
+
+def _readable(color):
+    r,g,b=color[0],color[1],color[2]
+    return INK if (0.299*r+0.587*g+0.114*b)>150 else (255,255,255,255)
+
 def write_png(path, rows, codec_names):
-    # Dependency-free PNG heatmap: rows=datasets, columns=codecs, green=larger ratio.
+    # Dependency-free PNG heatmap: rows=datasets, columns=codecs, teal=larger ratio.
     margin, cell_w, cell_h = 220, 210, 95
     datasets = sorted({row["dataset"] for row in rows})
     width, height = max(980, margin + len(codec_names) * cell_w + 30), max(340, 95 + len(datasets) * cell_h + 55)
-    pixels = bytearray([13, 20, 31, 255]) * (width * height)
+    pixels = bytearray(BACKGROUND) * (width * height)
     font = {
         'C':('01111','10000','10000','10000','10000','10000','01111'),
         'U':('10001','10001','10001','10001','10001','10001','01110'),
@@ -35,7 +47,7 @@ def write_png(path, rows, codec_names):
     def pixel(x, y, color):
         if 0 <= x < width and 0 <= y < height:
             pos = 4 * (y * width + x); pixels[pos:pos + 4] = bytes(color)
-    def text(x, y, value, color=(222, 235, 247, 255), scale=2):
+    def text(x, y, value, color=INK, scale=2):
         for char in value.upper():
             for ry, row in enumerate(font.get(char, font[" "])):
                 for rx, bit in enumerate(row):
@@ -51,22 +63,22 @@ def write_png(path, rows, codec_names):
             if not row:
                 continue
             scale = min(1.0, row["compression_ratio"] / maximum)
-            color = (25, int(70 + 155 * scale), int(95 + 90 * scale), 255)
+            color = _cell_color(scale)
             x0, y0 = margin + x * cell_w, 95 + y * cell_h
             for py in range(y0, y0 + cell_h - 8):
                 for px in range(x0, x0 + cell_w - 8):
                     offset = 4 * (py * width + px)
                     pixels[offset:offset + 4] = bytes(color)
-            text(x0 + 12, y0 + 20, f"{row['compression_ratio']:.2f}", scale=3)
+            text(x0 + 12, y0 + 20, f"{row['compression_ratio']:.2f}", color=_readable(color), scale=3)
     headers = {"zstd": "ZSTD", "snappy": "SNAPPY", "gzip": "GZIP", "lz4_block": "LZ4", "raw_deflate": "RAW DEFLATE"}
     for index, codec in enumerate(codec_names):
-        text(margin + index * cell_w, 47, headers.get(codec, codec.upper()), scale=1)
+        text(margin + index * cell_w, 47, headers.get(codec, codec.upper()), color=INK, scale=1)
         mode = next(r['execution_path'] for r in rows if r['codec'] == codec)
-        text(margin + index * cell_w, 67, mode, scale=2)
+        text(margin + index * cell_w, 67, mode, color=MUTED, scale=2)
     for index, dataset in enumerate(datasets):
-        label = dataset
+        label = dataset.replace("_bf16", "")
         label_scale = 1 if len(label) * 12 > margin - 44 else 2
-        text(22, 125 + index * cell_h, label, scale=label_scale)
+        text(22, 125 + index * cell_h, label, color=INK, scale=label_scale)
     raw = b"".join(b"\0" + pixels[y * width * 4:(y + 1) * width * 4] for y in range(height))
     def chunk(kind, data):
         return struct.pack(">I", len(data)) + kind + data + struct.pack(">I", zlib.crc32(kind + data) & 0xffffffff)

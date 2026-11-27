@@ -1,0 +1,26 @@
+{
+  "experiment": "512_128",
+  "status": "complete",
+  "completed_utc_epoch": 1795779124.274536,
+  "gpu_uuid": "GPU-d4e8f72a-044b-a24e-818f-0560f0b97483",
+  "gpu_index": 6,
+  "rows": 236,
+  "verified": true,
+  "actual_gpu_encode_batch_blocks": [
+    250,
+    512
+  ],
+  "requested": {
+    "encode_batch_blocks": "512",
+    "cpu_encode_threads": "1",
+    "decode_batch_blocks": "128",
+    "skip_unavailable_codecs": "false",
+    "codec_set": "all",
+    "codecs": "",
+    "execution_device": "declared"
+  },
+  "codec_timing_versions": [
+    "codec_call_v4_scaled_fp8_shared_encode"
+  ],
+  "raw_result_sha256": "3a4bbc1484a6517990e89131b830fa816f3a11973d7fdef698c882e11a376992"
+}

@@ -19,17 +19,17 @@ def settings(path):
     config=configparser.ConfigParser(interpolation=None)
     with path.open(encoding='utf-8') as handle:config.read_file(handle)
     allowed={
-        'environment':{'name','python','external_lock','wsl_distribution','wsl_env_path'},
+        'environment':{'name','python','wsl_distribution','wsl_env_path'},
         'compression':{'codec','block_bytes','input','output','metadata'},
         'decompression':{'input','output','verify_sha256'},
         'benchmark_datasets':None,
-        'benchmark':{'cpu_encode_threads','decode_batch_blocks','skip_unavailable_codecs','codec_set','execution_device','codecs'},
+        'benchmark':{'encode_batch_blocks','max_batch_bytes','max_batch_memory_fraction','retain_frames','cpu_encode_threads','decode_batch_blocks','skip_unavailable_codecs','codec_set','execution_device','codecs'},
         'benchmark_gpu_backends':None,
     }
     for section in config.sections():
         if section.startswith('dataset:'):
             name=section.split(':',1)[1]
-            if Path(name).name!=name or not name.endswith('.pt') or set(config[section])-{'layout','axes','page_tokens','kv_semantics'}:raise ValueError('Invalid dataset section: '+section)
+            if Path(name).name!=name or not name.endswith('.pt') or set(config[section])-{'layout','axes','page_tokens','kv_semantics','dtype'}:raise ValueError('Invalid dataset section: '+section)
             continue
         if section not in allowed or (allowed[section] is not None and set(config[section])-allowed[section]):raise ValueError('Unknown configuration section or key: '+section)
         if section=='benchmark_datasets':
@@ -38,6 +38,11 @@ def settings(path):
         if section=='benchmark_gpu_backends':
             for name,backend in config[section].items():
                 if not name.replace('_','').isalnum() or not re.fullmatch(r'[a-z0-9][a-z0-9-]*',backend):raise ValueError('Invalid benchmark GPU backend declaration: '+name)
+    from batch_policy import parse_batch, parse_max_bytes
+    for field in ('encode_batch_blocks','decode_batch_blocks'):
+        parse_batch(config.get('benchmark',field,fallback='1'))
+    parse_max_bytes(config.get('benchmark','max_batch_bytes',fallback='536870912'))
+    if not 0<config.getfloat('benchmark','max_batch_memory_fraction',fallback=0.5)<=0.8:raise ValueError('Invalid max batch budget')
     if config.get('benchmark','codec_set',fallback='all') not in ('core','all'):raise ValueError('codec_set must be core or all')
     if config.get('benchmark','execution_device',fallback='declared') not in ('cpu','declared'):raise ValueError('execution_device must be cpu or declared')
     if not config.getboolean('decompression','verify_sha256',fallback=True):raise ValueError('SHA-256 verification must remain enabled')
@@ -68,7 +73,16 @@ def main():
             sub.add_argument('--metadata')
     args = parser.parse_args()
     if args.command == 'install-plugin-deps':
-        raise SystemExit('Use python kvbench.py setup --codecs <names>; bulk unmanaged dependency installation is disabled')
+        from plugins import dependency_files
+        if sys.prefix == sys.base_prefix:
+            raise RuntimeError('Run through run.sh or a project virtual environment to install plugin dependencies')
+        scratch = Path(sys.prefix)/'tmp'
+        scratch.mkdir(parents=True,exist_ok=True)
+        environment = os.environ.copy()
+        environment.update(TMPDIR=str(scratch),TEMP=str(scratch),TMP=str(scratch),PIP_CACHE_DIR=str(Path(sys.prefix)/'pip-cache'))
+        for path in dependency_files(args.plugins):
+            subprocess.run([sys.executable,'-m','pip','install','--no-compile','--index-url',args.index_url,'-r',str(path)],check=True,env=environment)
+        return
     plugins = load_plugins(args.plugins)
     if args.command in ('list','check') and args.device != 'all':
         plugins = {name:p for name,p in plugins.items() if (getattr(p,'entry',{}).get('adapter') == 'gpu-api') == (args.device == 'gpu')}
@@ -89,8 +103,6 @@ def main():
                 if not plugin.supports(metadata):
                     print(f'{name}\tSKIPPED_DTYPE')
                     continue
-                from codec_manager import identity
-                identity(name, gpu=getattr(plugin,'entry',{}).get('adapter')=='gpu-api', directory=args.plugins)
                 if hasattr(plugin, 'prepare'):
                     plugin.prepare(metadata)
                 raw = bytes(range(128)) * 2

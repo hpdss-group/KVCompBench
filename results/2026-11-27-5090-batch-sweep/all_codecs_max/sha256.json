@@ -1,0 +1,9 @@
+{
+  "capabilities.json": "e69e453deba9dd7a892e207aecf2ac493590564dfef76b72ca19456c1348526a",
+  "experiment.json": "b7b450966f35bb490b726ee6a8e3402c250c02ddfede6ef3069e07dbc3bef04c",
+  "heatmap.html": "5f4a6ca2d291bbe9c6817af03e4cbed1010f17a489f555fb20e61457035ce85d",
+  "heatmap.png": "170fb54fd6c264bb297868f63d9e874d07ef83285e9574a1a9696131ab09274d",
+  "result.csv": "8bdbffe97857edb6ceb3802529d8c0c572e1a0236a20b9ee7a6e142ab5fee565",
+  "settings.example.txt": "f4e2def87bfb6fb0cf58a57c960b5bad2e3df07ec2e2f3da9bf9e94920bcfd96",
+  "unavailable_codecs.json": "dfb90c6ee1b73a6d0d192ee136d8e6ce900b7cda69ee8cb16fe67343122efce2"
+}

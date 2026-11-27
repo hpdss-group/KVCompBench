@@ -1,0 +1,1586 @@
+[
+  {
+    "dataset": "deepseek_bf16.pt",
+    "storage_dtype": "bf16",
+    "codec": "bz2",
+    "original": "CPU-CPU",
+    "cpu_available": true,
+    "frame_format": "plugin:bz2",
+    "batch_kind": "cpu-single"
+  },
+  {
+    "dataset": "deepseek_bf16.pt",
+    "storage_dtype": "bf16",
+    "codec": "delta-zstd",
+    "original": "CPU-CPU",
+    "cpu_available": true,
+    "frame_format": "plugin:delta-zstd",
+    "batch_kind": "cpu-single"
+  },
+  {
+    "dataset": "deepseek_bf16.pt",
+    "storage_dtype": "bf16",
+    "codec": "fse",
+    "original": "CPU-CPU",
+    "cpu_available": true,
+    "frame_format": "plugin:fse",
+    "batch_kind": "cpu-single"
+  },
+  {
+    "dataset": "deepseek_bf16.pt",
+    "storage_dtype": "bf16",
+    "codec": "huff0",
+    "original": "CPU-CPU",
+    "cpu_available": true,
+    "frame_format": "plugin:huff0",
+    "batch_kind": "cpu-single"
+  },
+  {
+    "dataset": "deepseek_bf16.pt",
+    "storage_dtype": "bf16",
+    "codec": "gzip",
+    "original": "CPU-GPU",
+    "cpu_available": true,
+    "frame_format": "KVG1:nvcomp-gzip-raw",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "deepseek_bf16.pt",
+    "storage_dtype": "bf16",
+    "codec": "identity",
+    "original": "CPU-CPU",
+    "cpu_available": true,
+    "frame_format": "plugin:identity",
+    "batch_kind": "cpu-single"
+  },
+  {
+    "dataset": "deepseek_bf16.pt",
+    "storage_dtype": "bf16",
+    "codec": "lz4",
+    "original": "CPU-GPU",
+    "cpu_available": true,
+    "frame_format": "KVG1:nvcomp-lz4-block-raw",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "deepseek_bf16.pt",
+    "storage_dtype": "bf16",
+    "codec": "lzma",
+    "original": "CPU-CPU",
+    "cpu_available": true,
+    "frame_format": "plugin:lzma",
+    "batch_kind": "cpu-single"
+  },
+  {
+    "dataset": "deepseek_bf16.pt",
+    "storage_dtype": "bf16",
+    "codec": "lzma:1",
+    "original": "CPU-CPU",
+    "cpu_available": true,
+    "frame_format": "plugin:lzma:1",
+    "batch_kind": "cpu-single"
+  },
+  {
+    "dataset": "deepseek_bf16.pt",
+    "storage_dtype": "bf16",
+    "codec": "lzma:6",
+    "original": "CPU-CPU",
+    "cpu_available": true,
+    "frame_format": "plugin:lzma:6",
+    "batch_kind": "cpu-single"
+  },
+  {
+    "dataset": "deepseek_bf16.pt",
+    "storage_dtype": "bf16",
+    "codec": "nvcomp-lz4",
+    "original": "GPU-GPU",
+    "cpu_available": false,
+    "frame_format": "nvcomp-native:lz4",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "deepseek_bf16.pt",
+    "storage_dtype": "bf16",
+    "codec": "nvcomp-snappy",
+    "original": "GPU-GPU",
+    "cpu_available": false,
+    "frame_format": "nvcomp-native:snappy",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "deepseek_bf16.pt",
+    "storage_dtype": "bf16",
+    "codec": "nvcomp-gdeflate",
+    "original": "GPU-GPU",
+    "cpu_available": false,
+    "frame_format": "nvcomp-native:gdeflate",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "deepseek_bf16.pt",
+    "storage_dtype": "bf16",
+    "codec": "nvcomp-deflate",
+    "original": "GPU-GPU",
+    "cpu_available": false,
+    "frame_format": "nvcomp-native:deflate",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "deepseek_bf16.pt",
+    "storage_dtype": "bf16",
+    "codec": "nvcomp-bitcomp",
+    "original": "GPU-GPU",
+    "cpu_available": false,
+    "frame_format": "nvcomp-native:bitcomp",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "deepseek_bf16.pt",
+    "storage_dtype": "bf16",
+    "codec": "nvcomp-ans",
+    "original": "GPU-GPU",
+    "cpu_available": false,
+    "frame_format": "nvcomp-native:ans",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "deepseek_bf16.pt",
+    "storage_dtype": "bf16",
+    "codec": "nvcomp-zstd",
+    "original": "GPU-GPU",
+    "cpu_available": false,
+    "frame_format": "nvcomp-native:zstd",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "deepseek_bf16.pt",
+    "storage_dtype": "bf16",
+    "codec": "nvcomp-cascaded",
+    "original": "GPU-GPU",
+    "cpu_available": false,
+    "frame_format": "nvcomp-native:cascaded:u8",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "deepseek_bf16.pt",
+    "storage_dtype": "bf16",
+    "codec": "nvcomp-gzip",
+    "original": "GPU-GPU",
+    "cpu_available": false,
+    "frame_format": "nvcomp-native:gzip",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "deepseek_bf16.pt",
+    "storage_dtype": "bf16",
+    "codec": "openzl",
+    "original": "CPU-GPU",
+    "cpu_available": true,
+    "frame_format": "KVG1:openzl-serial-gpu-v1",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "deepseek_bf16.pt",
+    "storage_dtype": "bf16",
+    "codec": "snappy",
+    "original": "CPU-GPU",
+    "cpu_available": true,
+    "frame_format": "KVG1:nvcomp-snappy-raw",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "deepseek_bf16.pt",
+    "storage_dtype": "bf16",
+    "codec": "splitzip",
+    "original": "GPU-GPU",
+    "cpu_available": false,
+    "frame_format": "splitzip-packet-v1",
+    "batch_kind": "official-merged-batch"
+  },
+  {
+    "dataset": "deepseek_bf16.pt",
+    "storage_dtype": "bf16",
+    "codec": "streamvbyte",
+    "original": "CPU-CPU",
+    "cpu_available": true,
+    "frame_format": "plugin:streamvbyte",
+    "batch_kind": "cpu-single"
+  },
+  {
+    "dataset": "deepseek_bf16.pt",
+    "storage_dtype": "bf16",
+    "codec": "zipnn",
+    "original": "CPU-CPU",
+    "cpu_available": true,
+    "frame_format": "plugin:zipnn",
+    "batch_kind": "cpu-single"
+  },
+  {
+    "dataset": "deepseek_bf16.pt",
+    "storage_dtype": "bf16",
+    "codec": "zlib",
+    "original": "CPU-GPU",
+    "cpu_available": true,
+    "frame_format": "KVG1:nvcomp-deflate-raw",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "deepseek_bf16.pt",
+    "storage_dtype": "bf16",
+    "codec": "zlib:1",
+    "original": "CPU-GPU",
+    "cpu_available": true,
+    "frame_format": "KVG1:nvcomp-deflate-raw",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "deepseek_bf16.pt",
+    "storage_dtype": "bf16",
+    "codec": "zlib:6",
+    "original": "CPU-GPU",
+    "cpu_available": true,
+    "frame_format": "KVG1:nvcomp-deflate-raw",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "deepseek_bf16.pt",
+    "storage_dtype": "bf16",
+    "codec": "zstd:1",
+    "original": "CPU-GPU",
+    "cpu_available": true,
+    "frame_format": "KVG1:nvcomp-zstd-raw",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "deepseek_bf16.pt",
+    "storage_dtype": "bf16",
+    "codec": "zstd:3",
+    "original": "CPU-GPU",
+    "cpu_available": true,
+    "frame_format": "KVG1:nvcomp-zstd-raw",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "deepseek_bf16.pt",
+    "storage_dtype": "bf16",
+    "codec": "zstd:9",
+    "original": "CPU-GPU",
+    "cpu_available": true,
+    "frame_format": "KVG1:nvcomp-zstd-raw",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "qwen_bf16.pt",
+    "storage_dtype": "bf16",
+    "codec": "bz2",
+    "original": "CPU-CPU",
+    "cpu_available": true,
+    "frame_format": "plugin:bz2",
+    "batch_kind": "cpu-single"
+  },
+  {
+    "dataset": "qwen_bf16.pt",
+    "storage_dtype": "bf16",
+    "codec": "delta-zstd",
+    "original": "CPU-CPU",
+    "cpu_available": true,
+    "frame_format": "plugin:delta-zstd",
+    "batch_kind": "cpu-single"
+  },
+  {
+    "dataset": "qwen_bf16.pt",
+    "storage_dtype": "bf16",
+    "codec": "fse",
+    "original": "CPU-CPU",
+    "cpu_available": true,
+    "frame_format": "plugin:fse",
+    "batch_kind": "cpu-single"
+  },
+  {
+    "dataset": "qwen_bf16.pt",
+    "storage_dtype": "bf16",
+    "codec": "huff0",
+    "original": "CPU-CPU",
+    "cpu_available": true,
+    "frame_format": "plugin:huff0",
+    "batch_kind": "cpu-single"
+  },
+  {
+    "dataset": "qwen_bf16.pt",
+    "storage_dtype": "bf16",
+    "codec": "gzip",
+    "original": "CPU-GPU",
+    "cpu_available": true,
+    "frame_format": "KVG1:nvcomp-gzip-raw",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "qwen_bf16.pt",
+    "storage_dtype": "bf16",
+    "codec": "identity",
+    "original": "CPU-CPU",
+    "cpu_available": true,
+    "frame_format": "plugin:identity",
+    "batch_kind": "cpu-single"
+  },
+  {
+    "dataset": "qwen_bf16.pt",
+    "storage_dtype": "bf16",
+    "codec": "lz4",
+    "original": "CPU-GPU",
+    "cpu_available": true,
+    "frame_format": "KVG1:nvcomp-lz4-block-raw",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "qwen_bf16.pt",
+    "storage_dtype": "bf16",
+    "codec": "lzma",
+    "original": "CPU-CPU",
+    "cpu_available": true,
+    "frame_format": "plugin:lzma",
+    "batch_kind": "cpu-single"
+  },
+  {
+    "dataset": "qwen_bf16.pt",
+    "storage_dtype": "bf16",
+    "codec": "lzma:1",
+    "original": "CPU-CPU",
+    "cpu_available": true,
+    "frame_format": "plugin:lzma:1",
+    "batch_kind": "cpu-single"
+  },
+  {
+    "dataset": "qwen_bf16.pt",
+    "storage_dtype": "bf16",
+    "codec": "lzma:6",
+    "original": "CPU-CPU",
+    "cpu_available": true,
+    "frame_format": "plugin:lzma:6",
+    "batch_kind": "cpu-single"
+  },
+  {
+    "dataset": "qwen_bf16.pt",
+    "storage_dtype": "bf16",
+    "codec": "nvcomp-lz4",
+    "original": "GPU-GPU",
+    "cpu_available": false,
+    "frame_format": "nvcomp-native:lz4",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "qwen_bf16.pt",
+    "storage_dtype": "bf16",
+    "codec": "nvcomp-snappy",
+    "original": "GPU-GPU",
+    "cpu_available": false,
+    "frame_format": "nvcomp-native:snappy",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "qwen_bf16.pt",
+    "storage_dtype": "bf16",
+    "codec": "nvcomp-gdeflate",
+    "original": "GPU-GPU",
+    "cpu_available": false,
+    "frame_format": "nvcomp-native:gdeflate",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "qwen_bf16.pt",
+    "storage_dtype": "bf16",
+    "codec": "nvcomp-deflate",
+    "original": "GPU-GPU",
+    "cpu_available": false,
+    "frame_format": "nvcomp-native:deflate",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "qwen_bf16.pt",
+    "storage_dtype": "bf16",
+    "codec": "nvcomp-bitcomp",
+    "original": "GPU-GPU",
+    "cpu_available": false,
+    "frame_format": "nvcomp-native:bitcomp",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "qwen_bf16.pt",
+    "storage_dtype": "bf16",
+    "codec": "nvcomp-ans",
+    "original": "GPU-GPU",
+    "cpu_available": false,
+    "frame_format": "nvcomp-native:ans",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "qwen_bf16.pt",
+    "storage_dtype": "bf16",
+    "codec": "nvcomp-zstd",
+    "original": "GPU-GPU",
+    "cpu_available": false,
+    "frame_format": "nvcomp-native:zstd",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "qwen_bf16.pt",
+    "storage_dtype": "bf16",
+    "codec": "nvcomp-cascaded",
+    "original": "GPU-GPU",
+    "cpu_available": false,
+    "frame_format": "nvcomp-native:cascaded:u8",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "qwen_bf16.pt",
+    "storage_dtype": "bf16",
+    "codec": "nvcomp-gzip",
+    "original": "GPU-GPU",
+    "cpu_available": false,
+    "frame_format": "nvcomp-native:gzip",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "qwen_bf16.pt",
+    "storage_dtype": "bf16",
+    "codec": "openzl",
+    "original": "CPU-GPU",
+    "cpu_available": true,
+    "frame_format": "KVG1:openzl-serial-gpu-v1",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "qwen_bf16.pt",
+    "storage_dtype": "bf16",
+    "codec": "snappy",
+    "original": "CPU-GPU",
+    "cpu_available": true,
+    "frame_format": "KVG1:nvcomp-snappy-raw",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "qwen_bf16.pt",
+    "storage_dtype": "bf16",
+    "codec": "splitzip",
+    "original": "GPU-GPU",
+    "cpu_available": false,
+    "frame_format": "splitzip-packet-v1",
+    "batch_kind": "official-merged-batch"
+  },
+  {
+    "dataset": "qwen_bf16.pt",
+    "storage_dtype": "bf16",
+    "codec": "streamvbyte",
+    "original": "CPU-CPU",
+    "cpu_available": true,
+    "frame_format": "plugin:streamvbyte",
+    "batch_kind": "cpu-single"
+  },
+  {
+    "dataset": "qwen_bf16.pt",
+    "storage_dtype": "bf16",
+    "codec": "zipnn",
+    "original": "CPU-CPU",
+    "cpu_available": true,
+    "frame_format": "plugin:zipnn",
+    "batch_kind": "cpu-single"
+  },
+  {
+    "dataset": "qwen_bf16.pt",
+    "storage_dtype": "bf16",
+    "codec": "zlib",
+    "original": "CPU-GPU",
+    "cpu_available": true,
+    "frame_format": "KVG1:nvcomp-deflate-raw",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "qwen_bf16.pt",
+    "storage_dtype": "bf16",
+    "codec": "zlib:1",
+    "original": "CPU-GPU",
+    "cpu_available": true,
+    "frame_format": "KVG1:nvcomp-deflate-raw",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "qwen_bf16.pt",
+    "storage_dtype": "bf16",
+    "codec": "zlib:6",
+    "original": "CPU-GPU",
+    "cpu_available": true,
+    "frame_format": "KVG1:nvcomp-deflate-raw",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "qwen_bf16.pt",
+    "storage_dtype": "bf16",
+    "codec": "zstd:1",
+    "original": "CPU-GPU",
+    "cpu_available": true,
+    "frame_format": "KVG1:nvcomp-zstd-raw",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "qwen_bf16.pt",
+    "storage_dtype": "bf16",
+    "codec": "zstd:3",
+    "original": "CPU-GPU",
+    "cpu_available": true,
+    "frame_format": "KVG1:nvcomp-zstd-raw",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "qwen_bf16.pt",
+    "storage_dtype": "bf16",
+    "codec": "zstd:9",
+    "original": "CPU-GPU",
+    "cpu_available": true,
+    "frame_format": "KVG1:nvcomp-zstd-raw",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "deepseek_fp8_e4m3fn.pt",
+    "storage_dtype": "fp8_e4m3fn",
+    "codec": "bz2",
+    "original": "CPU-CPU",
+    "cpu_available": true,
+    "frame_format": "plugin:bz2",
+    "batch_kind": "cpu-single"
+  },
+  {
+    "dataset": "deepseek_fp8_e4m3fn.pt",
+    "storage_dtype": "fp8_e4m3fn",
+    "codec": "delta-zstd",
+    "original": "CPU-CPU",
+    "cpu_available": true,
+    "frame_format": "plugin:delta-zstd",
+    "batch_kind": "cpu-single"
+  },
+  {
+    "dataset": "deepseek_fp8_e4m3fn.pt",
+    "storage_dtype": "fp8_e4m3fn",
+    "codec": "fse",
+    "original": "CPU-CPU",
+    "cpu_available": true,
+    "frame_format": "plugin:fse",
+    "batch_kind": "cpu-single"
+  },
+  {
+    "dataset": "deepseek_fp8_e4m3fn.pt",
+    "storage_dtype": "fp8_e4m3fn",
+    "codec": "huff0",
+    "original": "CPU-CPU",
+    "cpu_available": true,
+    "frame_format": "plugin:huff0",
+    "batch_kind": "cpu-single"
+  },
+  {
+    "dataset": "deepseek_fp8_e4m3fn.pt",
+    "storage_dtype": "fp8_e4m3fn",
+    "codec": "gzip",
+    "original": "CPU-GPU",
+    "cpu_available": true,
+    "frame_format": "KVG1:nvcomp-gzip-raw",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "deepseek_fp8_e4m3fn.pt",
+    "storage_dtype": "fp8_e4m3fn",
+    "codec": "identity",
+    "original": "CPU-CPU",
+    "cpu_available": true,
+    "frame_format": "plugin:identity",
+    "batch_kind": "cpu-single"
+  },
+  {
+    "dataset": "deepseek_fp8_e4m3fn.pt",
+    "storage_dtype": "fp8_e4m3fn",
+    "codec": "lz4",
+    "original": "CPU-GPU",
+    "cpu_available": true,
+    "frame_format": "KVG1:nvcomp-lz4-block-raw",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "deepseek_fp8_e4m3fn.pt",
+    "storage_dtype": "fp8_e4m3fn",
+    "codec": "lzma",
+    "original": "CPU-CPU",
+    "cpu_available": true,
+    "frame_format": "plugin:lzma",
+    "batch_kind": "cpu-single"
+  },
+  {
+    "dataset": "deepseek_fp8_e4m3fn.pt",
+    "storage_dtype": "fp8_e4m3fn",
+    "codec": "lzma:1",
+    "original": "CPU-CPU",
+    "cpu_available": true,
+    "frame_format": "plugin:lzma:1",
+    "batch_kind": "cpu-single"
+  },
+  {
+    "dataset": "deepseek_fp8_e4m3fn.pt",
+    "storage_dtype": "fp8_e4m3fn",
+    "codec": "lzma:6",
+    "original": "CPU-CPU",
+    "cpu_available": true,
+    "frame_format": "plugin:lzma:6",
+    "batch_kind": "cpu-single"
+  },
+  {
+    "dataset": "deepseek_fp8_e4m3fn.pt",
+    "storage_dtype": "fp8_e4m3fn",
+    "codec": "nvcomp-lz4",
+    "original": "GPU-GPU",
+    "cpu_available": false,
+    "frame_format": "nvcomp-native:lz4",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "deepseek_fp8_e4m3fn.pt",
+    "storage_dtype": "fp8_e4m3fn",
+    "codec": "nvcomp-snappy",
+    "original": "GPU-GPU",
+    "cpu_available": false,
+    "frame_format": "nvcomp-native:snappy",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "deepseek_fp8_e4m3fn.pt",
+    "storage_dtype": "fp8_e4m3fn",
+    "codec": "nvcomp-gdeflate",
+    "original": "GPU-GPU",
+    "cpu_available": false,
+    "frame_format": "nvcomp-native:gdeflate",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "deepseek_fp8_e4m3fn.pt",
+    "storage_dtype": "fp8_e4m3fn",
+    "codec": "nvcomp-deflate",
+    "original": "GPU-GPU",
+    "cpu_available": false,
+    "frame_format": "nvcomp-native:deflate",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "deepseek_fp8_e4m3fn.pt",
+    "storage_dtype": "fp8_e4m3fn",
+    "codec": "nvcomp-bitcomp",
+    "original": "GPU-GPU",
+    "cpu_available": false,
+    "frame_format": "nvcomp-native:bitcomp",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "deepseek_fp8_e4m3fn.pt",
+    "storage_dtype": "fp8_e4m3fn",
+    "codec": "nvcomp-ans",
+    "original": "GPU-GPU",
+    "cpu_available": false,
+    "frame_format": "nvcomp-native:ans",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "deepseek_fp8_e4m3fn.pt",
+    "storage_dtype": "fp8_e4m3fn",
+    "codec": "nvcomp-zstd",
+    "original": "GPU-GPU",
+    "cpu_available": false,
+    "frame_format": "nvcomp-native:zstd",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "deepseek_fp8_e4m3fn.pt",
+    "storage_dtype": "fp8_e4m3fn",
+    "codec": "nvcomp-cascaded",
+    "original": "GPU-GPU",
+    "cpu_available": false,
+    "frame_format": "nvcomp-native:cascaded:u8",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "deepseek_fp8_e4m3fn.pt",
+    "storage_dtype": "fp8_e4m3fn",
+    "codec": "nvcomp-gzip",
+    "original": "GPU-GPU",
+    "cpu_available": false,
+    "frame_format": "nvcomp-native:gzip",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "deepseek_fp8_e4m3fn.pt",
+    "storage_dtype": "fp8_e4m3fn",
+    "codec": "openzl",
+    "original": "CPU-GPU",
+    "cpu_available": true,
+    "frame_format": "KVG1:openzl-serial-gpu-v1",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "deepseek_fp8_e4m3fn.pt",
+    "storage_dtype": "fp8_e4m3fn",
+    "codec": "snappy",
+    "original": "CPU-GPU",
+    "cpu_available": true,
+    "frame_format": "KVG1:nvcomp-snappy-raw",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "deepseek_fp8_e4m3fn.pt",
+    "storage_dtype": "fp8_e4m3fn",
+    "codec": "splitzip",
+    "original": "GPU-GPU",
+    "cpu_available": false,
+    "frame_format": "splitzip-fp8-packet-v1",
+    "batch_kind": "official-merged-batch"
+  },
+  {
+    "dataset": "deepseek_fp8_e4m3fn.pt",
+    "storage_dtype": "fp8_e4m3fn",
+    "codec": "streamvbyte",
+    "original": "CPU-CPU",
+    "cpu_available": true,
+    "frame_format": "plugin:streamvbyte",
+    "batch_kind": "cpu-single"
+  },
+  {
+    "dataset": "deepseek_fp8_e4m3fn.pt",
+    "storage_dtype": "fp8_e4m3fn",
+    "codec": "zlib",
+    "original": "CPU-GPU",
+    "cpu_available": true,
+    "frame_format": "KVG1:nvcomp-deflate-raw",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "deepseek_fp8_e4m3fn.pt",
+    "storage_dtype": "fp8_e4m3fn",
+    "codec": "zlib:1",
+    "original": "CPU-GPU",
+    "cpu_available": true,
+    "frame_format": "KVG1:nvcomp-deflate-raw",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "deepseek_fp8_e4m3fn.pt",
+    "storage_dtype": "fp8_e4m3fn",
+    "codec": "zlib:6",
+    "original": "CPU-GPU",
+    "cpu_available": true,
+    "frame_format": "KVG1:nvcomp-deflate-raw",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "deepseek_fp8_e4m3fn.pt",
+    "storage_dtype": "fp8_e4m3fn",
+    "codec": "zstd:1",
+    "original": "CPU-GPU",
+    "cpu_available": true,
+    "frame_format": "KVG1:nvcomp-zstd-raw",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "deepseek_fp8_e4m3fn.pt",
+    "storage_dtype": "fp8_e4m3fn",
+    "codec": "zstd:3",
+    "original": "CPU-GPU",
+    "cpu_available": true,
+    "frame_format": "KVG1:nvcomp-zstd-raw",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "deepseek_fp8_e4m3fn.pt",
+    "storage_dtype": "fp8_e4m3fn",
+    "codec": "zstd:9",
+    "original": "CPU-GPU",
+    "cpu_available": true,
+    "frame_format": "KVG1:nvcomp-zstd-raw",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "deepseek_fp8_e5m2.pt",
+    "storage_dtype": "fp8_e5m2",
+    "codec": "bz2",
+    "original": "CPU-CPU",
+    "cpu_available": true,
+    "frame_format": "plugin:bz2",
+    "batch_kind": "cpu-single"
+  },
+  {
+    "dataset": "deepseek_fp8_e5m2.pt",
+    "storage_dtype": "fp8_e5m2",
+    "codec": "delta-zstd",
+    "original": "CPU-CPU",
+    "cpu_available": true,
+    "frame_format": "plugin:delta-zstd",
+    "batch_kind": "cpu-single"
+  },
+  {
+    "dataset": "deepseek_fp8_e5m2.pt",
+    "storage_dtype": "fp8_e5m2",
+    "codec": "fse",
+    "original": "CPU-CPU",
+    "cpu_available": true,
+    "frame_format": "plugin:fse",
+    "batch_kind": "cpu-single"
+  },
+  {
+    "dataset": "deepseek_fp8_e5m2.pt",
+    "storage_dtype": "fp8_e5m2",
+    "codec": "huff0",
+    "original": "CPU-CPU",
+    "cpu_available": true,
+    "frame_format": "plugin:huff0",
+    "batch_kind": "cpu-single"
+  },
+  {
+    "dataset": "deepseek_fp8_e5m2.pt",
+    "storage_dtype": "fp8_e5m2",
+    "codec": "gzip",
+    "original": "CPU-GPU",
+    "cpu_available": true,
+    "frame_format": "KVG1:nvcomp-gzip-raw",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "deepseek_fp8_e5m2.pt",
+    "storage_dtype": "fp8_e5m2",
+    "codec": "identity",
+    "original": "CPU-CPU",
+    "cpu_available": true,
+    "frame_format": "plugin:identity",
+    "batch_kind": "cpu-single"
+  },
+  {
+    "dataset": "deepseek_fp8_e5m2.pt",
+    "storage_dtype": "fp8_e5m2",
+    "codec": "lz4",
+    "original": "CPU-GPU",
+    "cpu_available": true,
+    "frame_format": "KVG1:nvcomp-lz4-block-raw",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "deepseek_fp8_e5m2.pt",
+    "storage_dtype": "fp8_e5m2",
+    "codec": "lzma",
+    "original": "CPU-CPU",
+    "cpu_available": true,
+    "frame_format": "plugin:lzma",
+    "batch_kind": "cpu-single"
+  },
+  {
+    "dataset": "deepseek_fp8_e5m2.pt",
+    "storage_dtype": "fp8_e5m2",
+    "codec": "lzma:1",
+    "original": "CPU-CPU",
+    "cpu_available": true,
+    "frame_format": "plugin:lzma:1",
+    "batch_kind": "cpu-single"
+  },
+  {
+    "dataset": "deepseek_fp8_e5m2.pt",
+    "storage_dtype": "fp8_e5m2",
+    "codec": "lzma:6",
+    "original": "CPU-CPU",
+    "cpu_available": true,
+    "frame_format": "plugin:lzma:6",
+    "batch_kind": "cpu-single"
+  },
+  {
+    "dataset": "deepseek_fp8_e5m2.pt",
+    "storage_dtype": "fp8_e5m2",
+    "codec": "nvcomp-lz4",
+    "original": "GPU-GPU",
+    "cpu_available": false,
+    "frame_format": "nvcomp-native:lz4",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "deepseek_fp8_e5m2.pt",
+    "storage_dtype": "fp8_e5m2",
+    "codec": "nvcomp-snappy",
+    "original": "GPU-GPU",
+    "cpu_available": false,
+    "frame_format": "nvcomp-native:snappy",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "deepseek_fp8_e5m2.pt",
+    "storage_dtype": "fp8_e5m2",
+    "codec": "nvcomp-gdeflate",
+    "original": "GPU-GPU",
+    "cpu_available": false,
+    "frame_format": "nvcomp-native:gdeflate",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "deepseek_fp8_e5m2.pt",
+    "storage_dtype": "fp8_e5m2",
+    "codec": "nvcomp-deflate",
+    "original": "GPU-GPU",
+    "cpu_available": false,
+    "frame_format": "nvcomp-native:deflate",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "deepseek_fp8_e5m2.pt",
+    "storage_dtype": "fp8_e5m2",
+    "codec": "nvcomp-bitcomp",
+    "original": "GPU-GPU",
+    "cpu_available": false,
+    "frame_format": "nvcomp-native:bitcomp",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "deepseek_fp8_e5m2.pt",
+    "storage_dtype": "fp8_e5m2",
+    "codec": "nvcomp-ans",
+    "original": "GPU-GPU",
+    "cpu_available": false,
+    "frame_format": "nvcomp-native:ans",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "deepseek_fp8_e5m2.pt",
+    "storage_dtype": "fp8_e5m2",
+    "codec": "nvcomp-zstd",
+    "original": "GPU-GPU",
+    "cpu_available": false,
+    "frame_format": "nvcomp-native:zstd",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "deepseek_fp8_e5m2.pt",
+    "storage_dtype": "fp8_e5m2",
+    "codec": "nvcomp-cascaded",
+    "original": "GPU-GPU",
+    "cpu_available": false,
+    "frame_format": "nvcomp-native:cascaded:u8",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "deepseek_fp8_e5m2.pt",
+    "storage_dtype": "fp8_e5m2",
+    "codec": "nvcomp-gzip",
+    "original": "GPU-GPU",
+    "cpu_available": false,
+    "frame_format": "nvcomp-native:gzip",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "deepseek_fp8_e5m2.pt",
+    "storage_dtype": "fp8_e5m2",
+    "codec": "openzl",
+    "original": "CPU-GPU",
+    "cpu_available": true,
+    "frame_format": "KVG1:openzl-serial-gpu-v1",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "deepseek_fp8_e5m2.pt",
+    "storage_dtype": "fp8_e5m2",
+    "codec": "snappy",
+    "original": "CPU-GPU",
+    "cpu_available": true,
+    "frame_format": "KVG1:nvcomp-snappy-raw",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "deepseek_fp8_e5m2.pt",
+    "storage_dtype": "fp8_e5m2",
+    "codec": "splitzip",
+    "original": "GPU-GPU",
+    "cpu_available": false,
+    "frame_format": "splitzip-fp8-packet-v1",
+    "batch_kind": "official-merged-batch"
+  },
+  {
+    "dataset": "deepseek_fp8_e5m2.pt",
+    "storage_dtype": "fp8_e5m2",
+    "codec": "streamvbyte",
+    "original": "CPU-CPU",
+    "cpu_available": true,
+    "frame_format": "plugin:streamvbyte",
+    "batch_kind": "cpu-single"
+  },
+  {
+    "dataset": "deepseek_fp8_e5m2.pt",
+    "storage_dtype": "fp8_e5m2",
+    "codec": "zlib",
+    "original": "CPU-GPU",
+    "cpu_available": true,
+    "frame_format": "KVG1:nvcomp-deflate-raw",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "deepseek_fp8_e5m2.pt",
+    "storage_dtype": "fp8_e5m2",
+    "codec": "zlib:1",
+    "original": "CPU-GPU",
+    "cpu_available": true,
+    "frame_format": "KVG1:nvcomp-deflate-raw",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "deepseek_fp8_e5m2.pt",
+    "storage_dtype": "fp8_e5m2",
+    "codec": "zlib:6",
+    "original": "CPU-GPU",
+    "cpu_available": true,
+    "frame_format": "KVG1:nvcomp-deflate-raw",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "deepseek_fp8_e5m2.pt",
+    "storage_dtype": "fp8_e5m2",
+    "codec": "zstd:1",
+    "original": "CPU-GPU",
+    "cpu_available": true,
+    "frame_format": "KVG1:nvcomp-zstd-raw",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "deepseek_fp8_e5m2.pt",
+    "storage_dtype": "fp8_e5m2",
+    "codec": "zstd:3",
+    "original": "CPU-GPU",
+    "cpu_available": true,
+    "frame_format": "KVG1:nvcomp-zstd-raw",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "deepseek_fp8_e5m2.pt",
+    "storage_dtype": "fp8_e5m2",
+    "codec": "zstd:9",
+    "original": "CPU-GPU",
+    "cpu_available": true,
+    "frame_format": "KVG1:nvcomp-zstd-raw",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "qwen_fp8_e4m3fn.pt",
+    "storage_dtype": "fp8_e4m3fn",
+    "codec": "bz2",
+    "original": "CPU-CPU",
+    "cpu_available": true,
+    "frame_format": "plugin:bz2",
+    "batch_kind": "cpu-single"
+  },
+  {
+    "dataset": "qwen_fp8_e4m3fn.pt",
+    "storage_dtype": "fp8_e4m3fn",
+    "codec": "delta-zstd",
+    "original": "CPU-CPU",
+    "cpu_available": true,
+    "frame_format": "plugin:delta-zstd",
+    "batch_kind": "cpu-single"
+  },
+  {
+    "dataset": "qwen_fp8_e4m3fn.pt",
+    "storage_dtype": "fp8_e4m3fn",
+    "codec": "fse",
+    "original": "CPU-CPU",
+    "cpu_available": true,
+    "frame_format": "plugin:fse",
+    "batch_kind": "cpu-single"
+  },
+  {
+    "dataset": "qwen_fp8_e4m3fn.pt",
+    "storage_dtype": "fp8_e4m3fn",
+    "codec": "huff0",
+    "original": "CPU-CPU",
+    "cpu_available": true,
+    "frame_format": "plugin:huff0",
+    "batch_kind": "cpu-single"
+  },
+  {
+    "dataset": "qwen_fp8_e4m3fn.pt",
+    "storage_dtype": "fp8_e4m3fn",
+    "codec": "gzip",
+    "original": "CPU-GPU",
+    "cpu_available": true,
+    "frame_format": "KVG1:nvcomp-gzip-raw",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "qwen_fp8_e4m3fn.pt",
+    "storage_dtype": "fp8_e4m3fn",
+    "codec": "identity",
+    "original": "CPU-CPU",
+    "cpu_available": true,
+    "frame_format": "plugin:identity",
+    "batch_kind": "cpu-single"
+  },
+  {
+    "dataset": "qwen_fp8_e4m3fn.pt",
+    "storage_dtype": "fp8_e4m3fn",
+    "codec": "lz4",
+    "original": "CPU-GPU",
+    "cpu_available": true,
+    "frame_format": "KVG1:nvcomp-lz4-block-raw",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "qwen_fp8_e4m3fn.pt",
+    "storage_dtype": "fp8_e4m3fn",
+    "codec": "lzma",
+    "original": "CPU-CPU",
+    "cpu_available": true,
+    "frame_format": "plugin:lzma",
+    "batch_kind": "cpu-single"
+  },
+  {
+    "dataset": "qwen_fp8_e4m3fn.pt",
+    "storage_dtype": "fp8_e4m3fn",
+    "codec": "lzma:1",
+    "original": "CPU-CPU",
+    "cpu_available": true,
+    "frame_format": "plugin:lzma:1",
+    "batch_kind": "cpu-single"
+  },
+  {
+    "dataset": "qwen_fp8_e4m3fn.pt",
+    "storage_dtype": "fp8_e4m3fn",
+    "codec": "lzma:6",
+    "original": "CPU-CPU",
+    "cpu_available": true,
+    "frame_format": "plugin:lzma:6",
+    "batch_kind": "cpu-single"
+  },
+  {
+    "dataset": "qwen_fp8_e4m3fn.pt",
+    "storage_dtype": "fp8_e4m3fn",
+    "codec": "nvcomp-lz4",
+    "original": "GPU-GPU",
+    "cpu_available": false,
+    "frame_format": "nvcomp-native:lz4",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "qwen_fp8_e4m3fn.pt",
+    "storage_dtype": "fp8_e4m3fn",
+    "codec": "nvcomp-snappy",
+    "original": "GPU-GPU",
+    "cpu_available": false,
+    "frame_format": "nvcomp-native:snappy",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "qwen_fp8_e4m3fn.pt",
+    "storage_dtype": "fp8_e4m3fn",
+    "codec": "nvcomp-gdeflate",
+    "original": "GPU-GPU",
+    "cpu_available": false,
+    "frame_format": "nvcomp-native:gdeflate",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "qwen_fp8_e4m3fn.pt",
+    "storage_dtype": "fp8_e4m3fn",
+    "codec": "nvcomp-deflate",
+    "original": "GPU-GPU",
+    "cpu_available": false,
+    "frame_format": "nvcomp-native:deflate",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "qwen_fp8_e4m3fn.pt",
+    "storage_dtype": "fp8_e4m3fn",
+    "codec": "nvcomp-bitcomp",
+    "original": "GPU-GPU",
+    "cpu_available": false,
+    "frame_format": "nvcomp-native:bitcomp",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "qwen_fp8_e4m3fn.pt",
+    "storage_dtype": "fp8_e4m3fn",
+    "codec": "nvcomp-ans",
+    "original": "GPU-GPU",
+    "cpu_available": false,
+    "frame_format": "nvcomp-native:ans",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "qwen_fp8_e4m3fn.pt",
+    "storage_dtype": "fp8_e4m3fn",
+    "codec": "nvcomp-zstd",
+    "original": "GPU-GPU",
+    "cpu_available": false,
+    "frame_format": "nvcomp-native:zstd",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "qwen_fp8_e4m3fn.pt",
+    "storage_dtype": "fp8_e4m3fn",
+    "codec": "nvcomp-cascaded",
+    "original": "GPU-GPU",
+    "cpu_available": false,
+    "frame_format": "nvcomp-native:cascaded:u8",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "qwen_fp8_e4m3fn.pt",
+    "storage_dtype": "fp8_e4m3fn",
+    "codec": "nvcomp-gzip",
+    "original": "GPU-GPU",
+    "cpu_available": false,
+    "frame_format": "nvcomp-native:gzip",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "qwen_fp8_e4m3fn.pt",
+    "storage_dtype": "fp8_e4m3fn",
+    "codec": "openzl",
+    "original": "CPU-GPU",
+    "cpu_available": true,
+    "frame_format": "KVG1:openzl-serial-gpu-v1",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "qwen_fp8_e4m3fn.pt",
+    "storage_dtype": "fp8_e4m3fn",
+    "codec": "snappy",
+    "original": "CPU-GPU",
+    "cpu_available": true,
+    "frame_format": "KVG1:nvcomp-snappy-raw",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "qwen_fp8_e4m3fn.pt",
+    "storage_dtype": "fp8_e4m3fn",
+    "codec": "splitzip",
+    "original": "GPU-GPU",
+    "cpu_available": false,
+    "frame_format": "splitzip-fp8-packet-v1",
+    "batch_kind": "official-merged-batch"
+  },
+  {
+    "dataset": "qwen_fp8_e4m3fn.pt",
+    "storage_dtype": "fp8_e4m3fn",
+    "codec": "streamvbyte",
+    "original": "CPU-CPU",
+    "cpu_available": true,
+    "frame_format": "plugin:streamvbyte",
+    "batch_kind": "cpu-single"
+  },
+  {
+    "dataset": "qwen_fp8_e4m3fn.pt",
+    "storage_dtype": "fp8_e4m3fn",
+    "codec": "zlib",
+    "original": "CPU-GPU",
+    "cpu_available": true,
+    "frame_format": "KVG1:nvcomp-deflate-raw",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "qwen_fp8_e4m3fn.pt",
+    "storage_dtype": "fp8_e4m3fn",
+    "codec": "zlib:1",
+    "original": "CPU-GPU",
+    "cpu_available": true,
+    "frame_format": "KVG1:nvcomp-deflate-raw",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "qwen_fp8_e4m3fn.pt",
+    "storage_dtype": "fp8_e4m3fn",
+    "codec": "zlib:6",
+    "original": "CPU-GPU",
+    "cpu_available": true,
+    "frame_format": "KVG1:nvcomp-deflate-raw",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "qwen_fp8_e4m3fn.pt",
+    "storage_dtype": "fp8_e4m3fn",
+    "codec": "zstd:1",
+    "original": "CPU-GPU",
+    "cpu_available": true,
+    "frame_format": "KVG1:nvcomp-zstd-raw",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "qwen_fp8_e4m3fn.pt",
+    "storage_dtype": "fp8_e4m3fn",
+    "codec": "zstd:3",
+    "original": "CPU-GPU",
+    "cpu_available": true,
+    "frame_format": "KVG1:nvcomp-zstd-raw",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "qwen_fp8_e4m3fn.pt",
+    "storage_dtype": "fp8_e4m3fn",
+    "codec": "zstd:9",
+    "original": "CPU-GPU",
+    "cpu_available": true,
+    "frame_format": "KVG1:nvcomp-zstd-raw",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "qwen_fp8_e5m2.pt",
+    "storage_dtype": "fp8_e5m2",
+    "codec": "bz2",
+    "original": "CPU-CPU",
+    "cpu_available": true,
+    "frame_format": "plugin:bz2",
+    "batch_kind": "cpu-single"
+  },
+  {
+    "dataset": "qwen_fp8_e5m2.pt",
+    "storage_dtype": "fp8_e5m2",
+    "codec": "delta-zstd",
+    "original": "CPU-CPU",
+    "cpu_available": true,
+    "frame_format": "plugin:delta-zstd",
+    "batch_kind": "cpu-single"
+  },
+  {
+    "dataset": "qwen_fp8_e5m2.pt",
+    "storage_dtype": "fp8_e5m2",
+    "codec": "fse",
+    "original": "CPU-CPU",
+    "cpu_available": true,
+    "frame_format": "plugin:fse",
+    "batch_kind": "cpu-single"
+  },
+  {
+    "dataset": "qwen_fp8_e5m2.pt",
+    "storage_dtype": "fp8_e5m2",
+    "codec": "huff0",
+    "original": "CPU-CPU",
+    "cpu_available": true,
+    "frame_format": "plugin:huff0",
+    "batch_kind": "cpu-single"
+  },
+  {
+    "dataset": "qwen_fp8_e5m2.pt",
+    "storage_dtype": "fp8_e5m2",
+    "codec": "gzip",
+    "original": "CPU-GPU",
+    "cpu_available": true,
+    "frame_format": "KVG1:nvcomp-gzip-raw",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "qwen_fp8_e5m2.pt",
+    "storage_dtype": "fp8_e5m2",
+    "codec": "identity",
+    "original": "CPU-CPU",
+    "cpu_available": true,
+    "frame_format": "plugin:identity",
+    "batch_kind": "cpu-single"
+  },
+  {
+    "dataset": "qwen_fp8_e5m2.pt",
+    "storage_dtype": "fp8_e5m2",
+    "codec": "lz4",
+    "original": "CPU-GPU",
+    "cpu_available": true,
+    "frame_format": "KVG1:nvcomp-lz4-block-raw",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "qwen_fp8_e5m2.pt",
+    "storage_dtype": "fp8_e5m2",
+    "codec": "lzma",
+    "original": "CPU-CPU",
+    "cpu_available": true,
+    "frame_format": "plugin:lzma",
+    "batch_kind": "cpu-single"
+  },
+  {
+    "dataset": "qwen_fp8_e5m2.pt",
+    "storage_dtype": "fp8_e5m2",
+    "codec": "lzma:1",
+    "original": "CPU-CPU",
+    "cpu_available": true,
+    "frame_format": "plugin:lzma:1",
+    "batch_kind": "cpu-single"
+  },
+  {
+    "dataset": "qwen_fp8_e5m2.pt",
+    "storage_dtype": "fp8_e5m2",
+    "codec": "lzma:6",
+    "original": "CPU-CPU",
+    "cpu_available": true,
+    "frame_format": "plugin:lzma:6",
+    "batch_kind": "cpu-single"
+  },
+  {
+    "dataset": "qwen_fp8_e5m2.pt",
+    "storage_dtype": "fp8_e5m2",
+    "codec": "nvcomp-lz4",
+    "original": "GPU-GPU",
+    "cpu_available": false,
+    "frame_format": "nvcomp-native:lz4",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "qwen_fp8_e5m2.pt",
+    "storage_dtype": "fp8_e5m2",
+    "codec": "nvcomp-snappy",
+    "original": "GPU-GPU",
+    "cpu_available": false,
+    "frame_format": "nvcomp-native:snappy",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "qwen_fp8_e5m2.pt",
+    "storage_dtype": "fp8_e5m2",
+    "codec": "nvcomp-gdeflate",
+    "original": "GPU-GPU",
+    "cpu_available": false,
+    "frame_format": "nvcomp-native:gdeflate",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "qwen_fp8_e5m2.pt",
+    "storage_dtype": "fp8_e5m2",
+    "codec": "nvcomp-deflate",
+    "original": "GPU-GPU",
+    "cpu_available": false,
+    "frame_format": "nvcomp-native:deflate",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "qwen_fp8_e5m2.pt",
+    "storage_dtype": "fp8_e5m2",
+    "codec": "nvcomp-bitcomp",
+    "original": "GPU-GPU",
+    "cpu_available": false,
+    "frame_format": "nvcomp-native:bitcomp",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "qwen_fp8_e5m2.pt",
+    "storage_dtype": "fp8_e5m2",
+    "codec": "nvcomp-ans",
+    "original": "GPU-GPU",
+    "cpu_available": false,
+    "frame_format": "nvcomp-native:ans",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "qwen_fp8_e5m2.pt",
+    "storage_dtype": "fp8_e5m2",
+    "codec": "nvcomp-zstd",
+    "original": "GPU-GPU",
+    "cpu_available": false,
+    "frame_format": "nvcomp-native:zstd",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "qwen_fp8_e5m2.pt",
+    "storage_dtype": "fp8_e5m2",
+    "codec": "nvcomp-cascaded",
+    "original": "GPU-GPU",
+    "cpu_available": false,
+    "frame_format": "nvcomp-native:cascaded:u8",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "qwen_fp8_e5m2.pt",
+    "storage_dtype": "fp8_e5m2",
+    "codec": "nvcomp-gzip",
+    "original": "GPU-GPU",
+    "cpu_available": false,
+    "frame_format": "nvcomp-native:gzip",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "qwen_fp8_e5m2.pt",
+    "storage_dtype": "fp8_e5m2",
+    "codec": "openzl",
+    "original": "CPU-GPU",
+    "cpu_available": true,
+    "frame_format": "KVG1:openzl-serial-gpu-v1",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "qwen_fp8_e5m2.pt",
+    "storage_dtype": "fp8_e5m2",
+    "codec": "snappy",
+    "original": "CPU-GPU",
+    "cpu_available": true,
+    "frame_format": "KVG1:nvcomp-snappy-raw",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "qwen_fp8_e5m2.pt",
+    "storage_dtype": "fp8_e5m2",
+    "codec": "splitzip",
+    "original": "GPU-GPU",
+    "cpu_available": false,
+    "frame_format": "splitzip-fp8-packet-v1",
+    "batch_kind": "official-merged-batch"
+  },
+  {
+    "dataset": "qwen_fp8_e5m2.pt",
+    "storage_dtype": "fp8_e5m2",
+    "codec": "streamvbyte",
+    "original": "CPU-CPU",
+    "cpu_available": true,
+    "frame_format": "plugin:streamvbyte",
+    "batch_kind": "cpu-single"
+  },
+  {
+    "dataset": "qwen_fp8_e5m2.pt",
+    "storage_dtype": "fp8_e5m2",
+    "codec": "zlib",
+    "original": "CPU-GPU",
+    "cpu_available": true,
+    "frame_format": "KVG1:nvcomp-deflate-raw",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "qwen_fp8_e5m2.pt",
+    "storage_dtype": "fp8_e5m2",
+    "codec": "zlib:1",
+    "original": "CPU-GPU",
+    "cpu_available": true,
+    "frame_format": "KVG1:nvcomp-deflate-raw",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "qwen_fp8_e5m2.pt",
+    "storage_dtype": "fp8_e5m2",
+    "codec": "zlib:6",
+    "original": "CPU-GPU",
+    "cpu_available": true,
+    "frame_format": "KVG1:nvcomp-deflate-raw",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "qwen_fp8_e5m2.pt",
+    "storage_dtype": "fp8_e5m2",
+    "codec": "zstd:1",
+    "original": "CPU-GPU",
+    "cpu_available": true,
+    "frame_format": "KVG1:nvcomp-zstd-raw",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "qwen_fp8_e5m2.pt",
+    "storage_dtype": "fp8_e5m2",
+    "codec": "zstd:3",
+    "original": "CPU-GPU",
+    "cpu_available": true,
+    "frame_format": "KVG1:nvcomp-zstd-raw",
+    "batch_kind": "nvcomp-batch"
+  },
+  {
+    "dataset": "qwen_fp8_e5m2.pt",
+    "storage_dtype": "fp8_e5m2",
+    "codec": "zstd:9",
+    "original": "CPU-GPU",
+    "cpu_available": true,
+    "frame_format": "KVG1:nvcomp-zstd-raw",
+    "batch_kind": "nvcomp-batch"
+  }
+]

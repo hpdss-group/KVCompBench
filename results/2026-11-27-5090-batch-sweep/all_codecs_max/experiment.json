@@ -1,0 +1,30 @@
+{
+  "experiment": "max",
+  "status": "complete",
+  "completed_utc_epoch": 1795795649.1606693,
+  "gpu_uuid": "GPU-01353343-54aa-25f3-79ef-3ddb242fedc4",
+  "gpu_index": 2,
+  "rows": 236,
+  "verified": true,
+  "actual_gpu_encode_batch_blocks": [
+    1024,
+    1290,
+    4096,
+    5074
+  ],
+  "requested": {
+    "encode_batch_blocks": "max",
+    "cpu_encode_threads": "1",
+    "decode_batch_blocks": "max",
+    "skip_unavailable_codecs": "false",
+    "codec_set": "all",
+    "codecs": "",
+    "execution_device": "declared",
+    "max_batch_bytes": "max",
+    "max_batch_memory_fraction": "0.5"
+  },
+  "codec_timing_versions": [
+    "codec_call_v4_scaled_fp8_shared_encode"
+  ],
+  "raw_result_sha256": "8bdbffe97857edb6ceb3802529d8c0c572e1a0236a20b9ee7a6e142ab5fee565"
+}

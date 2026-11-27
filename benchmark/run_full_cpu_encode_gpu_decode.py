@@ -37,6 +37,24 @@ def load_journal(path):
 def append(path,kind,job,records):
     with path.open('a',encoding='utf-8') as f:
         f.write(json.dumps(dict(type=kind,job=job,records=records),separators=(',',':'))+'\n');f.flush();os.fsync(f.fileno())
+
+from batch_measure import run_batched_codec
+from measurement_identity import layered_spec, decoder_job
+
+
+def write_rows(out, rows):
+    fields = []
+    for row in rows:
+        for key in row:
+            if key not in fields:
+                fields.append(key)
+    tmp = out / 'result.csv.tmp'
+    with tmp.open('w', newline='', encoding='utf-8') as handle:
+        writer = csv.DictWriter(handle, fieldnames=fields)
+        writer.writeheader()
+        writer.writerows(rows)
+    os.replace(tmp, out / 'result.csv')
+
 def main():
     p=argparse.ArgumentParser();p.add_argument('--root',type=Path,default=Path(__file__).resolve().parents[1]);p.add_argument('--output',type=Path)
     p.add_argument('--validate-only',action='store_true');p.add_argument('--codecs',help='Optional comma-separated validation subset');p.add_argument('--cpu-only',action='store_true');p.add_argument('--settings',type=Path);args=p.parse_args()
@@ -44,8 +62,14 @@ def main():
     if not out.is_relative_to(root/'benchmark/output'):raise ValueError('Output must be under benchmark/output')
     out.mkdir(parents=True,exist_ok=True);journal=out/'progress.jsonl';done,encodes=load_journal(journal)
     config=args.settings or root/'benchmark/settings.txt';c=configparser.ConfigParser(interpolation=None);c.read(config)
-    workers=c.getint('benchmark','cpu_encode_threads',fallback=1);batch_size=c.getint('benchmark','decode_batch_blocks',fallback=256)
-    if not 1<=workers<=256 or not 1<=batch_size<=4096:raise ValueError('Invalid workers/batch size')
+    from batch_policy import parse_batch, parse_max_bytes, resolve_batches
+    workers=c.getint('benchmark','cpu_encode_threads',fallback=1)
+    encode_request=parse_batch(c.get('benchmark','encode_batch_blocks',fallback='1'))
+    decode_request=parse_batch(c.get('benchmark','decode_batch_blocks',fallback='256'))
+    max_bytes=parse_max_bytes(c.get('benchmark','max_batch_bytes',fallback='536870912'))
+    memory_fraction=c.getfloat('benchmark','max_batch_memory_fraction',fallback=0.5)
+    if not 1<=workers<=256 or not 0<memory_fraction<=0.8:raise ValueError('Invalid workers/batch budget')
+    retain_frames=c.getboolean('benchmark','retain_frames',fallback=True)
     import torch
     omitted={}
     common={str(f.relative_to(root)):digest(f) for f in sorted((root/'benchmark/compression_framework').rglob('*.py')) if '__pycache__' not in f.parts}
@@ -76,7 +100,12 @@ def main():
         for name,route in routes.items():
             from codec_manager import identity
             installation=identity(name,gpu=route.mode.endswith('-GPU'))
+            encode_installation=identity(name,gpu=False) if route.mode=='CPU-GPU' else installation
             runtime=route.runtime();cpu=runtime.cpu_decoder()
+            group,batch_size,batch_plan=resolve_batches(runtime,pages,count,encode_request,decode_request,max_bytes,memory_fraction)
+            encode_batch=group if encode_request=='max' else encode_request
+            if not isinstance(encode_batch,int):encode_batch=1
+            print('BATCH_PLAN',filename,name,json.dumps(batch_plan,sort_keys=True),flush=True)
             modes=[route.mode]
             if route.mode.endswith('-GPU') and cpu is not None:modes.append(route.mode.split('-')[0]+'-CPU')
             capabilities.append(dict(dataset=filename,storage_dtype=pages.dtype,codec=name,original=route.mode,cpu_available=cpu is not None,frame_format=route.backend_id,batch_kind=route.options['batch_kind']))
@@ -92,22 +121,29 @@ def main():
             for dist in filter(None,distributions):
                 try:packages[dist]=md.version(dist)
                 except md.PackageNotFoundError:packages[dist]='unavailable'
-            spec=dict(installation=installation,storage_dtype=pages.dtype,page_format=pages.page_format,dataset=filename,input_sha256=input_hash,shape=pages.shape,dataset_metadata=pages.dataset_metadata,layout=layout,codec=name,source=source,packages=packages,frame_format=route.backend_id,options=route.options,framework=common,environment=environment,workers=workers,timing=TIMING_VERSION,validation=args.validate_only,count=count)
-            encjob=fingerprint(spec);jobs={mode:fingerprint(dict(encoder=encjob,mode=mode,batch=batch_size if mode.endswith('-GPU') else 1)) for mode in modes}
+            spec=dict(installation=installation,encode_installation=encode_installation,storage_dtype=pages.dtype,page_format=pages.page_format,dataset=filename,input_sha256=input_hash,shape=pages.shape,dataset_metadata=pages.dataset_metadata,layout=layout,codec=name,source=source,packages=packages,frame_format=route.backend_id,options=route.options,framework=common,environment=environment,workers=workers,timing=TIMING_VERSION,validation=args.validate_only,count=count,encode_batch=encode_batch if route.mode=='GPU-GPU' else 1)
+            layers=layered_spec(root,route,spec,count,encode_batch if route.mode=='GPU-GPU' else 1,group)
+            encjob=fingerprint(layers['encode']);jobs={mode:decoder_job(layers,mode,batch_size) for mode in modes}
+            spec['batch_plan']=batch_plan
+            spec['measurement_layers']=layers
+            spec['fingerprint_schema']='layered-measurement-v1'
             for mode,job in jobs.items():(out/('job_'+job+'.json')).write_text(json.dumps(dict(spec,mode=mode,encode_job=encjob),sort_keys=True))
             gpu=BatchDecoder(runtime) if route.mode.endswith('-GPU') else None;cpu_warmed=set();effective=workers if runtime.thread_safe and route.mode.startswith('CPU-') else 1
             pending_work=any((job,i) not in done for job in jobs.values() for i in range(count))
-            encoder=Encoder(runtime,sample) if pending_work else None
-            if encoder is not None:encoder.measure(sample)
+            encoder=Encoder(runtime,sample) if pending_work and not (route.mode == 'GPU-GPU' and encode_batch > 1) else None
             print('JOB',filename,name,modes,'pages',count,'bytes/page',pages.block_bytes,'workers',effective,flush=True)
+            if route.mode == 'GPU-GPU' and encode_batch > 1:
+                batch_rows=run_batched_codec(out, route, runtime, pages, count, name, filename, layout, jobs, encjob, modes, gpu, batch_size, encode_batch, encoder.setup_seconds if encoder is not None else 0, args.validate_only, retain_frames, group_blocks=group)
+                for row in batch_rows:row.update(encode_batch_policy=encode_request,decode_batch_policy=decode_request,batch_selection=json.dumps(batch_plan,sort_keys=True))
+                rows.extend(batch_rows)
+                write_rows(out, rows)
+                continue
             cache=out/'.frames'/encjob;cache.mkdir(parents=True,exist_ok=True)
             with concurrent.futures.ThreadPoolExecutor(max_workers=effective) as pool:
                 for start in range(0,count,batch_size):
                     indices=[i for i in range(start,min(start+batch_size,count)) if any((job,i) not in done for job in jobs.values())]
                     if not indices:continue
                     raw=[pages[i] for i in indices]
-                    for data in raw:
-                        if len(data) not in encoder.warmed:encoder.measure(data)
                     todo=[(i,data) for i,data in zip(indices,raw) if not ((encjob,i) in encodes and (cache/(str(i)+'.bin')).exists())]
                     measurements=dict(zip([i for i,data in todo],encoder.measure_many([data for i,data in todo],pool,effective)))
                     def encode(pair):
@@ -121,7 +157,8 @@ def main():
                         if old:
                             if old['frame_sha256']!=record['frame_sha256']:raise ValueError('Recreated frame changed; use a fresh experiment')
                             record=old
-                        saved.write_bytes(frame);return index,data,frame,record
+                        from batch_measure import save_frame
+                        save_frame(saved,frame);return index,data,frame,record
                     batch=[encode(pair) for pair in zip(indices,raw)]
                     fresh=[r for i,data,frame,r in batch if (encjob,i) not in encodes]
                     for mode,job in jobs.items():
@@ -152,18 +189,16 @@ def main():
                         append(journal,'decode',job,records)
                         for r in records:done[(job,r['block'])]=r
                     for i in indices:
-                        if all((job,i) in done for job in jobs.values()):(cache/(str(i)+'.bin')).unlink(missing_ok=True)
-            if all((job,i) in done for job in jobs.values() for i in range(count)):
+                        if not retain_frames and all((job,i) in done for job in jobs.values()):(cache/(str(i)+'.bin')).unlink(missing_ok=True)
+            if not retain_frames and all((job,i) in done for job in jobs.values() for i in range(count)):
                 for i in range(count):(cache/(str(i)+'.bin')).unlink(missing_ok=True)
             if not any(cache.iterdir()):cache.rmdir()
             for mode,job in jobs.items():
                 records=[done[(job,i)] for i in range(count)];raw=sum(r['raw_bytes'] for r in records);packed=sum(r['compressed_bytes'] for r in records)
-                row=dict(quantization_metrics=json.dumps(pages.dataset_metadata.get('quantization_metrics',{}),sort_keys=True),storage_dtype=pages.dtype,page_format=pages.page_format,quantization_origin=pages.quantization_origin,data_bytes=sum(r['page']['data_bytes'] for r in records),scale_bytes=sum(r['page']['scale_bytes'] for r in records),dataset=path.stem,validation_only=args.validate_only,codec=name,execution_path=mode,job_fingerprint=job,encode_job=encjob,frame_format=route.backend_id,layout=layout['layout'],page_tokens=layout.get('page_tokens',''),block_bytes=pages.block_bytes,cpu_encode_threads=effective,decode_batch_blocks=batch_size if mode.endswith('-GPU') else 1,decode_batch_kind=records[0]['decode_batch_kind'],blocks=count,verified_blocks=count,raw_bytes=raw,compressed_bytes=packed,compression_ratio=raw/packed,encode_mib_s=raw/1048576/sum(r['encode_seconds'] for r in records),decode_mib_s=raw/1048576/sum(r['decode_seconds'] for r in records),encode_page_mib_s=raw/1048576/sum(r['encode_page_seconds'] for r in records),decode_page_mib_s=raw/1048576/sum(r['decode_page_seconds'] for r in records),setup_seconds=records[0].get('setup_seconds',0),timing_version=TIMING_VERSION,encode_timing_scope='gpu_codec_call_cuda_events' if mode.startswith('GPU-') else 'cpu_codec_call_perf_counter',decode_timing_scope='gpu_codec_call_cuda_events' if mode.endswith('-GPU') else 'cpu_codec_call_perf_counter')
+                row=dict(quantization_metrics=json.dumps(pages.dataset_metadata.get('quantization_metrics',{}),sort_keys=True),storage_dtype=pages.dtype,page_format=pages.page_format,quantization_origin=pages.quantization_origin,data_bytes=sum(r['page']['data_bytes'] for r in records),scale_bytes=sum(r['page']['scale_bytes'] for r in records),dataset=path.stem,validation_only=args.validate_only,codec=name,execution_path=mode,job_fingerprint=job,encode_job=encjob,frame_format=route.backend_id,layout=layout['layout'],page_tokens=layout.get('page_tokens',''),block_bytes=pages.block_bytes,cpu_encode_threads=effective,decode_batch_blocks=batch_size if mode.endswith('-GPU') else 1,decode_batch_kind=records[0]['decode_batch_kind'],blocks=count,verified_blocks=count,raw_bytes=raw,compressed_bytes=packed,compression_ratio=raw/packed,encode_mib_s=raw/1048576/sum(r['encode_seconds'] for r in records),decode_mib_s=raw/1048576/sum(r['decode_seconds'] for r in records),encode_page_mib_s=raw/1048576/sum(r['encode_page_seconds'] for r in records),decode_page_mib_s=raw/1048576/sum(r['decode_page_seconds'] for r in records),setup_seconds=records[0].get('setup_seconds',0),timing_version=TIMING_VERSION,fingerprint_schema='layered-measurement-v1',frames_retained=retain_frames,encode_batch_blocks=1,encode_batch_min_blocks=1,encode_batch_requested_blocks=1,encode_timing_scope='gpu_codec_call_cuda_events' if mode.startswith('GPU-') else 'cpu_codec_call_perf_counter',decode_timing_scope='gpu_codec_call_cuda_events' if mode.endswith('-GPU') else 'cpu_codec_call_perf_counter')
+                row.update(encode_batch_policy=encode_request,decode_batch_policy=decode_request,batch_selection=json.dumps(batch_plan,sort_keys=True))
                 rows.append(row)
-            tmp=out/'result.csv.tmp'
-            with tmp.open('w',newline='',encoding='utf-8') as f:
-                w=csv.DictWriter(f,fieldnames=list(rows[0]));w.writeheader();w.writerows(rows)
-            os.replace(tmp,out/'result.csv')
+            write_rows(out, rows)
     if (out/'.frames').exists() and not any((out/'.frames').iterdir()):(out/'.frames').rmdir()
     (out/'capabilities.json').write_text(json.dumps(capabilities,indent=2))
     if not rows:raise ValueError('No completed eligible configurations')

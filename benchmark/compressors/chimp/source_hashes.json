@@ -1,0 +1,12 @@
+{
+  "api.py": "30889f6e14245b12c7f60dfe59e6b559359c6a52bacc8d594464bc31da5a055d",
+  "JavaCodecBridge.java": "8396b0a33ca0d21bd5f32dda088ecc9a52f49f6c0f4f4025bb9ebe194235dbf5",
+  "upstream/LICENCE.md": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+  "upstream/java/gr/aueb/delorean/chimp/OutputBitStream.java": "be03e8c9f3f5cc5060bdaaedfaff1fe17065460c675af0145d6e470d6fd26e3e",
+  "upstream/java/gr/aueb/delorean/chimp/ChimpDecompressor.java": "b0c2b121f41c98b69b20d033cd8d0c3b1c6d204fac557d93795aaf474a86924c",
+  "upstream/java/gr/aueb/delorean/chimp/ChimpDecompressor32.java": "bc9fee1d5c25f2180eaac8c1449bcf81bfcdb955691730d0dbc93afd12e71c69",
+  "upstream/java/gr/aueb/delorean/chimp/Value.java": "3df03bb327675991dcf3d1588e56f574d37d660d813bc5ca4dfa09f68ab77181",
+  "upstream/java/gr/aueb/delorean/chimp/Chimp.java": "aaf0926c09ed459fc7b51f13d9af3b6faed91bc17b49f99b5c82eb403930bfc7",
+  "upstream/java/gr/aueb/delorean/chimp/InputBitStream.java": "c0d33ca318b97b4a636da5cceeb3d3e5c60943e3a4408de52e63f1f4995951be",
+  "upstream/java/gr/aueb/delorean/chimp/Chimp32.java": "0262b7b24c65fe9b4654d1682b06248fbd2faa6726b58e3c44fb8bcf41a9ee7e"
+}

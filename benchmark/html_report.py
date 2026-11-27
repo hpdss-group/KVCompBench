@@ -41,6 +41,8 @@ def write_report(output, latest=None, compressors=None):
     output=Path(output)
     csv_text=(output/'result.csv').read_text(encoding='utf-8')
     rows=list(csv.DictReader(csv_text.splitlines()))
+    from report_batches import annotate_batches
+    annotate_batches(output, rows)
     if not rows: raise ValueError('Empty benchmark results')
     notes=codec_notes(compressors or Path(__file__).resolve().parent/'compressors')
     for r in rows:
@@ -51,6 +53,15 @@ def write_report(output, latest=None, compressors=None):
             r['timing_note']='codec_call_v2：CPU 调用边界计时；GPU 输入已驻留显存，使用 CUDA Event 测量实际执行流上的调用至计算完成。排除预热、H2D/D2H、结果封装与校验；调用内部必要处理和分配仍属于该 API 窗口。'
         else:
             r['timing_note']='历史端到端口径：包含当时框架的调用、输入准备及 GPU 传输等开销，不属于 codec_call_v2。'
+        for field in ('encode_batch_blocks', 'encode_batch_min_blocks', 'encode_batch_requested_blocks', 'decode_batch_blocks'):
+            value = r.get(field)
+            if value not in (None, ''):
+                number = float(value)
+                if not math.isfinite(number) or not number.is_integer() or number < 1:
+                    raise ValueError('Invalid batch size: ' + field)
+                r[field] = int(number)
+            else:
+                r[field] = None
         for extra in ('encode_page_mib_s','decode_page_mib_s'):
             if extra in r:r[extra]=float(r[extra])
         for key in ['compression_ratio','encode_mib_s','decode_mib_s','block_bytes','blocks','raw_bytes','compressed_bytes','verified_blocks']:
