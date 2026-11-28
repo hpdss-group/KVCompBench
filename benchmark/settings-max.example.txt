@@ -10,6 +10,9 @@ qwen_fp8_e4m3fn.pt = 268320
 qwen_fp8_e5m2.pt = 268320
 
 [benchmark]
+# 0: use page_tokens; N > 0: N times the per-format LCM including scales.
+LCM_BF16 = 32
+LCM_FP8 = 1
 encode_batch_blocks = max
 cpu_encode_threads = 1
 decode_batch_blocks = max

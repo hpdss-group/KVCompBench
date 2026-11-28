@@ -139,3 +139,32 @@ environments, compressed-frame caches and checkpoint journals. Historical numeri
 experiments retain their measured frame limits; their directory names are requests,
 not guaranteed actual batch sizes. Codec throughput and page throughput must be
 interpreted separately.
+
+## Automatic byte-aligned KV pages
+
+The benchmark can choose equal full-page byte sizes across selected datasets of
+one stored format, while retaining complete KV tokens and FP8 scales:
+
+```ini
+[benchmark]
+LCM_BF16 = 32
+LCM_FP8 = 1
+```
+
+Each value is a non-negative integer. Zero keeps the dataset's `page_tokens`;
+a positive value multiplies the least common multiple of the participating
+per-token byte counts. BF16, FP8 E4M3FN and FP8 E5M2 form separate alignment
+groups; the two FP8 groups share the FP8 multiplier. Tail pages retain their
+actual lengths. Enabled alignment requires KV layout. The saved legacy `LCM`
+setting remains a fallback when a format-specific setting is absent.
+
+For the supplied DeepSeek/Qwen data, BF16 token payloads are 1,024/4,096 bytes,
+so multiplier 32 selects 128 KiB pages (128/32 tokens). FP8 token payloads,
+including scales, are 516/2,080 bytes, so multiplier 1 selects 268,320-byte pages
+(520/129 tokens). These values depend on the selected tensors: selecting only
+one dataset can change its group's least common multiple. Alignment is a
+comparability rule, not an automatic throughput optimization.
+
+Resolved `page_tokens` participates in the existing layered data fingerprint;
+CSV and HTML report the resolved page bytes and actual measured batches.
+Changing settings does not change an already-running process's saved experiment.
