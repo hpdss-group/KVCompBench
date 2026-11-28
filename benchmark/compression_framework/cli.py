@@ -23,7 +23,7 @@ def settings(path):
         'compression':{'codec','block_bytes','input','output','metadata'},
         'decompression':{'input','output','verify_sha256'},
         'benchmark_datasets':None,
-        'benchmark':{'encode_batch_blocks','max_batch_bytes','max_batch_memory_fraction','retain_frames','cpu_encode_threads','decode_batch_blocks','skip_unavailable_codecs','codec_set','execution_device','codecs'},
+        'benchmark':{'lcm','lcm_bf16','lcm_fp8','encode_batch_blocks','max_batch_bytes','max_batch_memory_fraction','retain_frames','cpu_encode_threads','decode_batch_blocks','skip_unavailable_codecs','codec_set','execution_device','codecs'},
         'benchmark_gpu_backends':None,
     }
     for section in config.sections():
@@ -38,6 +38,8 @@ def settings(path):
         if section=='benchmark_gpu_backends':
             for name,backend in config[section].items():
                 if not name.replace('_','').isalnum() or not re.fullmatch(r'[a-z0-9][a-z0-9-]*',backend):raise ValueError('Invalid benchmark GPU backend declaration: '+name)
+    from page_alignment import lcm_multipliers
+    lcm_multipliers(config)
     from batch_policy import parse_batch, parse_max_bytes
     for field in ('encode_batch_blocks','decode_batch_blocks'):
         parse_batch(config.get('benchmark',field,fallback='1'))

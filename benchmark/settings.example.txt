@@ -10,6 +10,9 @@ qwen_fp8_e4m3fn.pt = 532480
 qwen_fp8_e5m2.pt = 532480
 
 [benchmark]
+# 0: use page_tokens; N > 0: N times the per-format LCM including scales.
+LCM_BF16 = 0
+LCM_FP8 = 0
 # GPU batches accept 1..4096 or max. CPU APIs remain single-page.
 encode_batch_blocks = 1
 # max removes the fixed raw-byte cap for GPU automatic selection.

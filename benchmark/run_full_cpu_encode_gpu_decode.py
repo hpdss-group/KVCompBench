@@ -5,7 +5,8 @@ sys.path[:0]=[str(Path(__file__).resolve().parent),str(Path(__file__).resolve().
 from benchmark_routes import select_routes, discover_routes
 from codec_timing import Encoder,TIMING_VERSION
 from batch_decode import BatchDecoder
-from kv_pages import Pages,dataset_configs,validation_subset
+from kv_pages import Pages,validation_subset
+from page_alignment import aligned_dataset_configs
 
 def digest(path):
     h=hashlib.sha256()
@@ -74,7 +75,7 @@ def main():
     omitted={}
     common={str(f.relative_to(root)):digest(f) for f in sorted((root/'benchmark/compression_framework').rglob('*.py')) if '__pycache__' not in f.parts}
     common['runner']=digest(__file__);rows=[];capabilities=[]
-    for filename,layout in dataset_configs(config).items():
+    for filename,layout in aligned_dataset_configs(config, root/'benchmark/input').items():
         path=root/'benchmark/input'/filename;pages=Pages(path,layout)
         if args.validate_only:pages=validation_subset(pages)
         count=len(pages)
